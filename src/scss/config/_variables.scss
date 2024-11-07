@@ -1,0 +1,74 @@
+// Color
+$gray-100: #f7fafc;
+$gray-200: #edf2f7;
+$gray-300: #e2e8f0;
+$gray-400: #cbd5e0;
+$gray-500: #a0aec0;
+$gray-600: #718096;
+$gray-700: #4a5568;
+$gray-800: #2d3748;
+$gray-900: #1a202c;
+
+$black: #000;
+$white: #FFF;
+
+$primary-100: #ebf8ff;
+$primary-200: #bee3f8;
+$primary-300: #90cdf4;
+$primary-400: #63b3ed;
+$primary-500: #4299e1;
+$primary-600: #3182ce;
+$primary-700: #2b6cb0;
+$primary-800: #2c5282;
+$primary-900: #2a4365;
+
+$primary: $primary-500;
+
+// Typography
+$ff-default: Tahoma, Geneva, Verdana, sans-serif;
+$ff-title: Tahoma, Geneva, Verdana, sans-serif;
+$ff-code: monospace;
+
+// $fs-xs: rem(12);
+// $fs-sm: rem(14);
+// $fs-base: rem(16);
+// $fs-lg: rem(20);
+// $fs-xl: rem(24);
+// $fs-2xl: rem(32);
+// $fs-3xl: rem(40);
+// $fs-4xl: rem(48);
+
+$fw-light: 300;
+$fw-regular: 400;
+$fw-medium: 500;
+$fw-semibold: 600;
+$fw-bold: 700;
+$fw-extrabold: 800;
+$fw-black: 900;
+
+// Browser context
+$browser-context: 16;
+
+// Media queries
+$breakpoints: (
+  xs: 375,
+  sm: 640,
+  md: 768,
+  lg: 1024,
+  xl: 1280,
+  2xl: 1536,
+  3xl: 1920,
+);
+
+// Z-index
+$z-index-values: ('modal', 'tooltip', 'header', 'base');
+
+// Gutter
+$gutter: 30px;
+$gutter-mobile: 16px;
+
+// Border
+// $border-radius: rem(7);
+// $border-radius-rounded: 99999px;
+// $border-color: $grey-lighter;
+// $border-color-focus: $grey-light;

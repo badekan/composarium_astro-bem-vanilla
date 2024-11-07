@@ -17,34 +17,43 @@ const { title } = Astro.props;
 		<title>{title}</title>
 	</head>
 	<body>
-		<slot />
+		<div class="main-layout">
+			<div class="main-layout__head">
+				
+			</div>
+			<div class="main-layout__body">
+				<slot />
+			</div>
+			<div class="main-layout__head">
+
+			</div>
+		</div>
 	</body>
 </html>
-<style is:global>
-	:root {
-		--accent: 136, 58, 234;
-		--accent-light: 224, 204, 250;
-		--accent-dark: 49, 10, 101;
-		--accent-gradient: linear-gradient(
-			45deg,
-			rgb(var(--accent)),
-			rgb(var(--accent-light)) 30%,
-			white 60%
-		);
-	}
-	html {
-		font-family: system-ui, sans-serif;
-		background: #13151a;
-	}
-	code {
-		font-family:
-			Menlo,
-			Monaco,
-			Lucida Console,
-			Liberation Mono,
-			DejaVu Sans Mono,
-			Bitstream Vera Sans Mono,
-			Courier New,
-			monospace;
+<style lang="scss">
+	@use "../scss/config" as *;
+	
+	$main-layout--background: $black !default;
+
+	.main-layout {
+		display: flex;
+		flex-direction: column;
+		align-items: stretch;
+		justify-content: space-between;
+		min-height: 100vh;
+
+		background: $main-layout--background;
+
+		&__head,
+		&__foot {
+				flex-grow: 0;
+				flex-shrink: 0;
+		}   
+
+		&__body {
+				flex-grow: 1;
+				flex-shrink: 0;
+		} 
+			
 	}
 </style>

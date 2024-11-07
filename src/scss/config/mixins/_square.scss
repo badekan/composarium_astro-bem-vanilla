@@ -1,0 +1,5 @@
+@mixin square($size) {
+  flex-shrink: 0;
+  width: rem($size);
+  height: rem($size);
+}

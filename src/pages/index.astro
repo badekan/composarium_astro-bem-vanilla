@@ -1,6 +1,47 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import Card from '../components/Card.astro';
+
+const pomme = [
+	{
+		"name": "Atoms",
+		"items": [
+			{
+				"name": "button",
+				"path": "/atoms/button",
+				"img": "/atoms/button",
+			}
+		]
+	},
+	{
+		"name": "Molecules",
+	},
+	{
+		"name": "Oganisms",
+		"subitems": [
+			{
+				"name": "Header",
+				"items": [
+					{
+						"name": "Header",
+						"path": "/organisms/header",
+						"img": "/organisms/header",
+					}
+				]
+			},
+			{
+				"name": "Footer",
+				"items": [
+					{
+						"name": "Footer",
+						"path": "/organisms/footer",
+						"img": "/organisms/footer",
+					}
+				]
+			}
+		]
+	},
+]
 ---
 
 <Layout title="Welcome to Astro.">

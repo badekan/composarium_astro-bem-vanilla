@@ -1,0 +1,37 @@
+@mixin center($type: 'absolute', $axis: 'both') {
+  @if $type == 'absolute' {
+    position: absolute;
+
+    @if $axis == 'y' {
+      top: 50%;
+
+      transform: translate3d(0, -50%, 0);
+    } @else if $axis == 'x' {
+      left: 50%;
+
+      transform: translate3d(-50%, 0, 0);
+    } @else if $axis == 'both' {
+      top: 50%;
+      left: 50%;
+
+      transform: translate3d(-50%, -50%, 0);
+    } @else {
+      @error '`#{$axis}` is not a valid $axis';
+    }
+  } @else if $type == 'flex' {
+    display: flex;
+
+    @if $axis== 'y' {
+      align-items: center;
+    } @else if $axis== 'x' {
+      justify-content: center;
+    } @else if $axis== 'both' {
+      align-items: center;
+      justify-content: center;
+    } @else {
+      @error '`#{$axis}` is not a valid $axis';
+    }
+  } @else {
+    @error '`#{$type}` is not a valid $type';
+  }
+}

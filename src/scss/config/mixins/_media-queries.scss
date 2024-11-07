@@ -1,0 +1,45 @@
+@use 'sass:map';
+
+$breakpoints: (
+  xs: 375,
+  sm: 640,
+  md: 768,
+  lg: 1024,
+  xl: 1280,
+  2xl: 1536,
+  3xl: 1920,
+) !default;
+
+@mixin mq($type, $value) {
+  $size: map.get($breakpoints, $value);
+
+  @if $size {
+    @if $type== 'min' {
+      @media screen and (min-width: ($size + 'px')) {
+        @content;
+      }
+    } @else if $type== 'max' {
+      @media screen and (max-width: ($size - 1 + 'px')) {
+        @content;
+      }
+    } @else {
+      @warn 'Unknown `#{$type}` in media mixin.';
+    }
+  } @else {
+    @error '`#{$size}` does not exist in the $breakpoints map';
+  }
+}
+
+@mixin coarse-pointer() {
+  @media (pointer: coarse) {
+    @content;
+  }
+}
+
+@mixin hover() {
+  @media (hover: hover) {
+    &:hover {
+      @content;
+    }
+  }
+}

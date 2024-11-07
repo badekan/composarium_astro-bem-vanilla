@@ -1,0 +1,11 @@
+@use 'sass:list';
+
+$z-index-values: ('modal', 'tooltip', 'header', 'base') !default;
+
+@mixin z-index($layer) {
+  @if index($z-index-values, $layer) {
+    z-index: (list.length($z-index-values) - list.index($z-index-values, $layer))+1;
+  } @else {
+    @warn 'There is no item "#{$layer}" in this list; choose one of: #{$z-index-values}';
+  }
+}

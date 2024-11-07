@@ -1,0 +1,19 @@
+@mixin arrow($color: transparent) {
+  position: absolute;
+  top: 50%;
+
+  display: block;
+  width: 0.625em;
+  height: 0.625em;
+  margin-top: -0.4375em;
+  pointer-events: none;
+
+  content: ' ';
+
+  border: 3px solid $color;
+  border-top: 0;
+  border-right: 0;
+  border-radius: 2px;
+  transform: rotate(-45deg);
+  transform-origin: center;
+}

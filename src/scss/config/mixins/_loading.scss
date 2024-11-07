@@ -1,0 +1,37 @@
+@keyframes spinAround {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(359deg);
+  }
+}
+
+// Loading
+@mixin loading($color: #ccc) {
+  $loading--size: 1em;
+
+  position: relative;
+  top: calc(50% - (#{$loading--size} * 0.5));
+
+  left: calc(50% - (#{$loading--size} * 0.5));
+
+  display: block;
+  width: $loading--size;
+  height: $loading--size;
+
+  content: '';
+
+  border: 2px solid $color;
+  border-top-color: transparent;
+  border-right-color: transparent;
+  border-radius: 99999px;
+
+  animation: spinAround 500ms infinite linear;
+}
+
+@mixin loading-color($color: #ccc) {
+  border-bottom-color: $color;
+  border-left-color: $color;
+}
