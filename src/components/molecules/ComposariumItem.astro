@@ -1,0 +1,88 @@
+---
+interface Props {
+  nameTxt: string;
+  pathUrl: string;
+  srcImg: string;
+}
+
+const { nameTxt, pathUrl, srcImg } = Astro.props;
+---
+
+<a class="composarium-item" href={pathUrl}>
+  <div class="composarium-item__img-wrap">
+    <img src={srcImg} alt="." />
+  </div>
+  <div class="composarium-item__text-wrap">
+    <p class="composarium-item__name">{nameTxt}</p>
+  </div>
+</a>
+
+<style lang="scss">
+	@use "../../scss/config" as *;
+  
+  $composarium--gutter: rem(8);
+
+	// Composarium item
+	.composarium-item{
+    $self: &;
+
+    position: relative;
+    text-decoration: none;
+		&__text-wrap, &__img-wrap{
+      position: relative;
+      z-index: 1;
+    }
+
+		&__img-wrap{
+			width: 100%;
+			position: relative;
+			overflow: hidden;
+			aspect-ratio: 300 / 150;
+			border: 1px solid $gray-400;
+			border-radius: $radius-lg;
+			margin-bottom: rem(6);
+			background: $gray-200;
+			img{
+				position: absolute;
+				top: 0;
+				left: 0;
+				width: 100%;
+				height: 100%;
+				object-fit: cover;
+			}
+		}
+
+
+		&__name{
+			font-size: $fs-base;
+			color: $black;
+			font-weight: $fw-regular;
+		}
+
+    &:before{
+      content:'';
+      position: absolute;
+      display: block;
+      left: -#{$composarium--gutter};
+      top: -#{$composarium--gutter};
+      width: calc(100% + #{$composarium--gutter} * 2);
+      height: calc(100% + #{$composarium--gutter} * 2);
+      background: $gray-100;
+      border-radius: $radius-xl;
+      transform: scale(.95);
+      opacity: 0;
+      transition: all .3s ease-out;
+    }
+
+    &:hover{
+      #{$self}__name{
+        color: $primary-700;
+      }
+      &:before{
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+		
+	}
+</style>

@@ -1,3 +1,8 @@
+@use "./functions/units" as units;
+
+// Browser context
+// $browser-context: is defined into the "./functions/units" files;
+
 // Color
 $gray-100: #f7fafc;
 $gray-200: #edf2f7;
@@ -25,18 +30,18 @@ $primary-900: #2a4365;
 $primary: $primary-500;
 
 // Typography
-$ff-default: Tahoma, Geneva, Verdana, sans-serif;
-$ff-title: Tahoma, Geneva, Verdana, sans-serif;
+$ff-default: "Sora", Tahoma, Geneva, Verdana, sans-serif;
+$ff-title: "Sora", Tahoma, Geneva, Verdana, sans-serif;
 $ff-code: monospace;
 
-// $fs-xs: rem(12);
-// $fs-sm: rem(14);
-// $fs-base: rem(16);
-// $fs-lg: rem(20);
-// $fs-xl: rem(24);
-// $fs-2xl: rem(32);
-// $fs-3xl: rem(40);
-// $fs-4xl: rem(48);
+$fs-xs: units.rem(12);
+$fs-sm: units.rem(14);
+$fs-base: units.rem(16);
+$fs-lg: units.rem(20);
+$fs-xl: units.rem(24);
+$fs-2xl: units.rem(32);
+$fs-3xl: units.rem(40);
+$fs-4xl: units.rem(48);
 
 $fw-light: 300;
 $fw-regular: 400;
@@ -45,9 +50,6 @@ $fw-semibold: 600;
 $fw-bold: 700;
 $fw-extrabold: 800;
 $fw-black: 900;
-
-// Browser context
-$browser-context: 16;
 
 // Media queries
 $breakpoints: (
@@ -68,7 +70,11 @@ $gutter: 30px;
 $gutter-mobile: 16px;
 
 // Border
-// $border-radius: rem(7);
-// $border-radius-rounded: 99999px;
-// $border-color: $grey-lighter;
-// $border-color-focus: $grey-light;
+$radius-sm: units.rem(2);
+$radius-base: units.rem(4);
+$radius-md: units.rem(6);
+$radius-lg: units.rem(8);
+$radius-xl: units.rem(12); 
+$radius-2xl: units.rem(16);
+$radius-3xl: units.rem(24);
+$radius-full: units.rem(999999);

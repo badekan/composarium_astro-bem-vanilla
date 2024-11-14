@@ -1,0 +1,242 @@
+@use "../config/variables" as vars;
+@use "../config/functions/units" as units;
+
+$body-background-color: vars.$white;
+$body-color: vars.$black;
+$body-size: 16px;
+$body-min-width: 300px;
+$body-rendering: optimizeLegibility;
+$body-family: vars.$ff-default;
+$body-overflow-x: hidden;
+$body-overflow-y: scroll;
+
+// $body-color: $text;
+$body-font-size: #{units.$browser-context}px;
+$body-weight: vars.$fw-regular;
+$body-line-height: 1.5;
+
+$code-family: vars.$ff-code;
+$code-padding: 0.25em 0.5em 0.25em;
+$code-weight: normal;
+$code-size: 0.875em;
+
+$small-font-size: 0.875em;
+
+$hr-background-color: vars.$gray-500;
+$hr-height: 2px;
+$hr-margin: 1.5rem 0;
+
+$strong-color: currentColor;
+$strong-weight: vars.$fw-bold;
+
+$link: vars.$primary;
+
+$code: vars.$primary;
+$code-background: vars.$gray-100;
+
+$pre: $body-color;
+$pre-background: vars.$gray-100;
+$pre-font-size: 0.875em;
+$pre-padding: 1.25rem 1.5rem;
+$pre-code-font-size: 1em;
+
+html {
+  min-width: $body-min-width;
+
+  font-size: $body-size;
+
+  background-color: $body-background-color;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: $body-rendering;
+  text-size-adjust: 100%;
+}
+
+article,
+aside,
+figure,
+footer,
+header,
+hgroup,
+section {
+  display: block;
+}
+
+body,
+button,
+input,
+optgroup,
+select,
+textarea {
+  font-family: $body-family;
+}
+
+code,
+pre {
+  -moz-osx-font-smoothing: auto;
+  -webkit-font-smoothing: auto;
+
+  font-family: $code-family;
+}
+
+// Inline
+a {
+  color: $link;
+  text-decoration: underline;
+
+  cursor: pointer;
+
+  strong {
+    color: currentColor;
+  }
+  
+  &:hover {
+    color: currentColor;
+  }
+}
+
+code {
+  padding: $code-padding;
+  font-size: $code-size;
+  font-weight: $code-weight;
+
+  color: $code;
+
+  background-color: $code-background;
+}
+
+hr {
+  display: block;
+  height: $hr-height;
+  margin: $hr-margin;
+
+  background-color: $hr-background-color;
+  border: none;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+input[type='checkbox'],
+input[type='radio'] {
+  vertical-align: baseline;
+}
+
+small {
+  font-size: $small-font-size;
+}
+
+span {
+  font-style: inherit;
+  font-weight: inherit;
+}
+
+strong {
+  font-weight: $strong-weight;
+  color: $strong-color;
+}
+// Block
+
+fieldset {
+  border: none;
+}
+
+pre {
+  padding: $pre-padding;
+  overflow-x: auto;
+  font-size: $pre-font-size;
+
+  color: $pre;
+  word-wrap: normal;
+  white-space: pre;
+
+  background-color: $pre-background;
+  -webkit-overflow-scrolling: touch;
+
+  code {
+    padding: 0;
+    font-size: $pre-code-font-size;
+
+    color: currentColor;
+
+    background-color: transparent;
+  }
+}
+
+table {
+  td,
+  th {
+    vertical-align: top;
+
+    &:not([align]) {
+      text-align: inherit;
+    }
+  }
+
+  th {
+    color: $strong-weight;
+  }
+}
+/* Custom generic: from here is personal customisation of the reset */
+*[hidden] {
+  display: none;
+}
+
+blockquote,
+q {
+  quotes: none;
+}
+
+blockquote:before,
+blockquote:after,
+q:before,
+q:after {
+  content: '';
+  content: none;
+}
+
+table {
+  border-spacing: 0;
+  border-collapse: collapse;
+}
+
+input,
+button {
+  /* stylelint-disable-next-line property-no-vendor-prefix */
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+button {
+  cursor: pointer;
+  border: 0 none;
+  border-radius: 0;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  position: relative;
+
+  overflow-x: $body-overflow-x;
+  overflow-y: $body-overflow-y;
+  font-size: $body-font-size;
+  font-weight: $body-weight;
+  line-height: $body-line-height;
+
+  color: $body-color;
+
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+/*
+  If you want to increase the size of the all website at some breakpoint do it here on the html! 
+*/
+// html{
+//     @include mq('min',2xl){ font-size: 18px } // If you use REM this can be usefull
+// }

@@ -1,0 +1,85 @@
+@mixin reset-font-smoothing {
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+@mixin reset-root {
+  html,
+  body {
+    height: 100%;
+  }
+
+  body {
+    @include reset-font-smoothing;
+  }
+}
+
+@mixin reset-spacing {
+  * {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+  }
+
+  *:before,
+  *:after {
+    box-sizing: border-box;
+  }
+}
+
+@mixin reset-list {
+  ol,
+  ul {
+    list-style: none;
+  }
+}
+
+@mixin reset-media {
+  img,
+  picture,
+  video,
+  canvas,
+  svg {
+    display: block;
+    max-width: 100%;
+  }
+}
+
+@mixin reset-form {
+  input,
+  button,
+  textarea,
+  select {
+    font: inherit;
+  }
+}
+
+@mixin reset-text {
+  p,
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-size: 100%;
+    font-weight: normal;
+    overflow-wrap: break-word;
+  }
+}
+
+@mixin reset {
+  @include reset-root;
+  @include reset-spacing;
+  @include reset-list;
+  @include reset-media;
+  @include reset-form;
+  @include reset-text;
+}
+
+@mixin reset-host {
+  @include reset-spacing;
+  display: block;
+}
+
+@include reset;

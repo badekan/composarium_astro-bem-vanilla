@@ -1,10 +1,11 @@
 @use "sass:math";
-@use "../variables" as vars;
 
-@function em($pixels, $context: vars.$browser-context) {
+$browser-context: 16;
+
+@function em($pixels, $context: $browser-context) {
   @return math.div($pixels, $context) * 1em;
 }
 
-@function rem($pixels, $context: vars.$browser-context) {
+@function rem($pixels, $context: $browser-context) {
   @return math.div($pixels, $context) * 1rem;
 }
