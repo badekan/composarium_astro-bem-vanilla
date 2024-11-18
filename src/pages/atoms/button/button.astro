@@ -1,0 +1,228 @@
+---
+// https://www.kristiannielsen.com/blog/how-to-make-reusable-components-with-astro/
+
+import type { HTMLAttributes } from 'astro/types';
+
+export enum ButtonVariant {
+  Primary = 'primary',
+  Secondary = 'secondary',
+  Outline = 'outlined',
+  Link = 'link',
+}
+
+interface CommonProps {
+  variant?: ButtonVariant;
+  isLoading?: boolean;
+  tag?: "button" | "a";
+}
+
+type Props = CommonProps & HTMLAttributes<"button"> & HTMLAttributes<"a">;
+
+const { tag, variant, isLoading, ...props } = Astro.props as Props;
+const Tag = tag ? tag : "a";
+const classVariant = variant ? `button--${variant}` : "";
+const classLoading = isLoading ? `button--loading` : "";
+---
+
+<Tag class:list={["button", classVariant, classLoading, props.class]} {...props}>
+  <slot />
+</Tag>
+
+<style lang="scss" is:global>
+
+  @use "../../../scss/config" as *;
+
+  // Box Model
+  $button--height: rem(60);
+  $button--py: rem(15);
+  $button--px: rem(25);
+  // Typography
+  $button--fs: rem(14);
+  $button--color: $white;
+  $button--family: $ff-default;
+  $button--font-weight: $fw-bold;
+  // Visual
+  $button--background: $primary;
+  $button--border-width: rem(2);
+  $button--border-radius: $radius-lg;
+  // Animation
+  $button--transition:
+    all 0.2s ease-in-out,
+    outline 0s linear;
+
+  @mixin button-hover-box-shadow-focus-outline($color: darken($button--background, 5%)) {
+    &:hover {
+      box-shadow: 0 0 0 rem(1) $color;
+
+      &:active {
+        box-shadow: 0 0 0 rem(2) $color;
+      }
+    }
+
+    &:focus-visible {
+      outline: rem(3) solid rgba($color, 0.3);
+    }
+  }
+
+  @mixin button-loading-modifier-color($self: '&.button', $color: $button--color) {
+    #{$self}--loading {
+      &:after {
+        @include loading-color($color);
+      }
+    }
+  }
+
+  // Button
+  .button {
+    $self: '&.button';
+
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: $button--height;
+    padding: $button--py $button--px;
+    font-family: $button--family;
+    font-size: $button--fs;
+    font-weight: $button--font-weight;
+
+    color: $button--color;
+    text-align: center;
+    text-decoration: none;
+    white-space: nowrap;
+    cursor: pointer;
+
+    background: $button--background;
+    border-color: $button--background;
+
+    border-style: solid;
+    border-width: $button--border-width;
+    border-radius: $button--border-radius;
+
+    outline: none;
+
+    transition: $button--transition;
+
+    .icon {
+      &:not(:first-child) {
+        margin-right: rem(-4);
+        margin-left: rem(6);
+      }
+
+      &:not(:last-child) {
+        margin-right: rem(6);
+        margin-left: rem(-4);
+      }
+    }
+
+    // State
+    @include button-hover-box-shadow-focus-outline(darken($button--background, 5%));
+
+    &:hover {
+      color: $button--color;
+      background: darken($button--background, 5%);
+      border-color: darken($button--background, 5%);
+    }
+
+    &[disabled] {
+      pointer-events: none;
+      filter: grayscale(1);
+      opacity: 0.5;
+    }
+
+    // Modifiers
+    &--secondary {
+      color: $button--color;
+
+      background: $secondary;
+      border-color: $secondary;
+
+      // State
+      @include button-hover-box-shadow-focus-outline(darken($secondary, 5%));
+
+      &:hover {
+        background: darken($secondary, 5%);
+        border-color: darken($secondary, 5%);
+      }
+
+      // Modifiers
+      @include button-loading-modifier-color($self, $button--color);
+    }
+
+    &--outlined {
+      color: $button--background;
+
+      background: transparent;
+      border-color: $button--background;
+
+      // State
+      &:hover {
+        color: darken($button--background, 5%);
+
+        background: transparent;
+        border-color: darken($button--background, 5%);
+      }
+
+      // Modifiers
+      @include button-loading-modifier-color($self, $button--background);
+    }
+
+    &--link {
+      color: $button--background;
+      text-decoration: underline;
+
+      background: transparent;
+      border-color: transparent;
+
+      // State
+      @include button-hover-box-shadow-focus-outline(darken($button--background, 5%));
+
+      &:hover,
+      &:hover:active {
+        box-shadow: inherit;
+      }
+
+      &:hover {
+        color: darken($button--background, 5%);
+
+        background: transparent;
+        border-color: transparent;
+      }
+
+      // Modifiers
+      @include button-loading-modifier-color($self, $button--background);
+    }
+
+    &--loading {
+      color: transparent;
+
+      pointer-events: none;
+
+      &:after {
+        @include loading($button--color);
+        position: absolute;
+      }
+    }
+  }
+
+  // Buttons
+  $buttons--gutter-x: rem(8);
+  $buttons--gutter-y: rem(8);
+
+  .buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: $buttons--gutter-y $buttons--gutter-x;
+    align-items: center;
+    justify-content: flex-start;
+
+    &--centered {
+      justify-content: center;
+    }
+
+    &--right {
+      justify-content: flex-end;
+    }
+  }
+
+</style>

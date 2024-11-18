@@ -1,0 +1,62 @@
+---
+import Components from "../../../layouts/Components.astro";
+import Layout from "../../../layouts/Layout.astro";
+
+import UnderlineAnimated, { UnderlineAnimatedVariant } from "./underline-animated.astro";
+
+const items = ['Home', 'Solutions', 'Services', 'Company', 'Client', 'Contact'];
+---
+<Layout title="pomme">
+  <Components>
+    <div class="underline-animated-block">
+      <h1 class="underline-animated-block__title">Underline Animated</h1>
+      <div class="underline-animated-block__section">
+        <h2 class="underline-animated-block__sm-title">In Out</h2>
+        <div class="underline-animated-block__grid">
+          {items.map((item) => (
+            <UnderlineAnimated>
+              {item}
+            </UnderlineAnimated>
+          ))}
+        </div>
+      </div>
+      <div class="underline-animated-block__section">
+        <h2 class="underline-animated-block__sm-title">In Back</h2>
+        <div class="underline-animated-block__grid">
+          {items.map((item) => (
+            <UnderlineAnimated variant={UnderlineAnimatedVariant.InBack}>
+              {item}
+            </UnderlineAnimated>
+          ))}
+        </div>
+      </div>
+      
+    </div>
+  </Components>
+</Layout>
+
+<style lang="scss">
+
+  @use "../../../scss/config" as *;
+
+  .underline-animated-block{
+    &__title{
+      font-weight: $fw-bold;
+      font-size: $fs-lg;
+      margin-bottom: rem(20);
+    }
+    &__sm-title{
+      font-weight: $fw-bold;
+      font-size: $fs-base;
+    }
+    &__section{
+      &:not(:last-child){
+        margin-bottom: rem(20);
+      }
+    }
+    &__grid{
+      display: flex;
+      gap: rem(10);
+    }
+  }
+</style>

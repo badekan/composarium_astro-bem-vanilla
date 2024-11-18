@@ -1,0 +1,24 @@
+---
+import Components from "../../../layouts/Components.astro";
+import Layout from "../../../layouts/Layout.astro";
+
+import Button, { ButtonVariant } from "./button.astro";
+---
+<Layout title="pomme">
+  <Components>
+    <div class="buttons">
+      <Button variant={ButtonVariant.Link}>
+        Link
+      </Button>
+      <Button>
+        Default
+      </Button>
+      <Button variant={ButtonVariant.Outline}>
+        Outline
+      </Button>
+      <Button disabled>
+        Disabled
+      </Button>
+    </div>
+  </Components>
+</Layout>

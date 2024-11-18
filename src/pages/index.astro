@@ -3,6 +3,15 @@
 import Layout from '../layouts/Layout.astro';
 import ComposariumItem from '../components/molecules/ComposariumItem.astro';
 
+
+import ImgButton from '../img/button.png'; 
+import ImgButton2x from '../img/button@2x.png'; 
+
+import ImgUnderlineAnimated from '../img/underline-animated.png'; 
+
+import ImgGlossyBorder from '../img/glossy-border.png'; 
+import ImgGlossyBorder2x from '../img/glossy-border@2x.png'; 
+
 const items = [
 	{
 		"name": "Atoms",
@@ -10,22 +19,13 @@ const items = [
 			{
 				"name": "Button",
 				"path": "/atoms/button",
-				"img": "/atoms/button",
+				"src": ImgButton,
+				"src2x": ImgButton2x.src,
 			},
 			{
-				"name": "Button",
-				"path": "/atoms/button",
-				"img": "/atoms/button",
-			},
-			{
-				"name": "Button",
-				"path": "/atoms/button",
-				"img": "/atoms/button",
-			},
-			{
-				"name": "Button",
-				"path": "/atoms/button",
-				"img": "/atoms/button",
+				"name": "Underline Animated",
+				"path": "/atoms/underline-animated",
+				"src": ImgUnderlineAnimated,
 			},
 		]
 	},
@@ -33,9 +33,10 @@ const items = [
 		"name": "Molecules",
 		"items": [
 			{
-				"name": "Button",
-				"path": "/atoms/button",
-				"img": "/atoms/button",
+				"name": "Glossy Border",
+				"path": "/molecules/glossy-border",
+				"src": ImgGlossyBorder,
+				"src2x": ImgGlossyBorder2x,
 			},
 		],
 	},
@@ -45,22 +46,22 @@ const items = [
 			{
 				"name": "Button",
 				"path": "/atoms/button",
-				"img": "/atoms/button",
+				"src": ImgButton,
 			},
 			{
 				"name": "Button",
 				"path": "/atoms/button",
-				"img": "/atoms/button",
+				"src": ImgButton,
 			},
 			{
 				"name": "Button",
 				"path": "/atoms/button",
-				"img": "/atoms/button",
+				"src": ImgButton,
 			},
 			{
 				"name": "Button",
 				"path": "/atoms/button",
-				"img": "/atoms/button",
+				"src": ImgButton,
 			},
 		],
 		"subitems": [
@@ -70,12 +71,12 @@ const items = [
 					{
 						"name": "Header",
 						"path": "/organisms/header",
-						"img": "/organisms/header",
+						"src": ImgButton,
 					},
 					{
 						"name": "Header Item",
 						"path": "/organisms/header",
-						"img": "/organisms/header",
+						"src": ImgButton,
 					},
 				]
 			},
@@ -85,12 +86,12 @@ const items = [
 					{
 						"name": "Footer",
 						"path": "/organisms/footer",
-						"img": "/organisms/footer",
+						"src": ImgButton,
 					},
 					{
 						"name": "Footer Item",
 						"path": "/organisms/footer",
-						"img": "/organisms/footer",
+						"src": ImgButton,
 					},
 				]
 			}
@@ -135,7 +136,8 @@ const items = [
 										<ComposariumItem 
 											nameTxt={subitem.name}
 											pathUrl={subitem.path}
-											srcImg={subitem.img} />
+											srcImg={subitem.src}
+											srcImg2x={subitem.src2x}/>
 									</li>
 								))}
 							</ul>
@@ -152,7 +154,7 @@ const items = [
 													<ComposariumItem 
 														nameTxt={subsubitem.name}
 														pathUrl={subsubitem.path}
-														srcImg={subsubitem.img} />
+														srcImg={subsubitem.src} />
 												</li>
 											))}
 										</ul>

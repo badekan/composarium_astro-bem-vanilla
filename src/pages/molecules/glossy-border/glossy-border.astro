@@ -1,0 +1,196 @@
+---
+---
+
+<div class="box glossy-border">
+  <div class="box__inner glossy-border__inner">
+    <slot/>
+  </div>
+</div>
+
+<style lang="scss">
+  @use "../../../scss/config" as *;
+
+  .box{
+    border-radius: $radius-lg;
+    &__inner{
+      padding: rem(30);
+      border-radius: $radius-lg;
+      // color: $white;
+      color: transparent;
+      background: linear-gradient(to top,#242b35,#31373f);
+    }
+  }
+</style>
+
+<style lang="scss">
+  $glossy-border--radial-gradient-size: 300;
+  $glossy-border--border-gradient-size: 2;
+  $glossy-border--box-shadow-size: 1;
+
+  $glossy-border--color-radial-gradient: rgba(255, 255, 255, 0.5);
+  $glossy-border--color-linear-gradient: rgba(255, 255, 255, 0.2);
+  $glossy-border--color-border: rgba(255, 255, 255, 0.4);
+
+  .glossy-border{
+    $self: &;
+
+    --x: -9999px;
+    --y: -9999px;
+
+    --border-radius: inherit;
+    --border-radius-inset: inherit;
+    --transition-duration: inherit;
+
+    --gradient-degree: 45deg;
+
+    position: relative;
+    
+    // Set gradient border
+    &:before,
+    &:after{
+      content:'';
+      display: block;
+      position: absolute;
+      left: 0px;
+      top: 0px;
+      width: calc(100% + (#{$glossy-border--border-gradient-size} * 2px));
+      height: calc(100% + (#{$glossy-border--border-gradient-size} * 2px));
+      inset: -#{$glossy-border--border-gradient-size}px;
+      border-style: solid;
+      border-width: 0;
+      box-sizing: border-box;
+      border-radius: var(--border-radius-inset);
+      opacity: 0;
+    }
+
+    // Border used for linear gradient
+    &:before{
+      z-index: 0;
+      background: linear-gradient(var(--gradient-degree),$glossy-border--color-linear-gradient,transparent);
+    }
+
+    // Border used for radial gradient
+    &:after{
+      z-index: 1;
+      transition: opacity .3s ease;
+      background: radial-gradient(#{$glossy-border--radial-gradient-size}px circle at var(--x) var(--y), $glossy-border--color-radial-gradient 0, transparent 100%);
+    }
+
+    &__inner{
+      transition: box-shadow .3s ease;
+      box-shadow: 0 0 0 #{$glossy-border--box-shadow-size}px transparent;
+    }
+
+    // State
+    &:hover{
+      #{$self}__inner{
+        box-shadow: 0 0 0 #{$glossy-border--box-shadow-size}px $glossy-border--color-border;
+      }
+    }
+
+    // Modifier
+    &--active{
+      box-shadow: inherit;
+      &:before, &:after{
+        opacity: 1;
+        transition: opacity var(--transition-duration) ease-out;
+      }
+    }
+  }
+</style>
+
+<script>
+  /*
+    Those function deplace the radial gradient border to the mouse position
+  */
+
+  const transitionDuration = 500;
+
+  const createWrapperAroundChildren = (containerElement: HTMLElement) => {
+
+    const inner = document.createElement('div');
+
+    while (containerElement.firstChild) {
+      inner.appendChild(containerElement.firstChild);
+    }
+
+    containerElement.innerHTML = '';
+    containerElement.appendChild(inner);
+
+    return inner;
+  }
+
+  const createInnerWrapperArroundAndCloneStyle = (item: HTMLElement) => {
+    const glossyBorder = item;
+    const glossyBorderInner = createWrapperAroundChildren(glossyBorder);
+
+    const stylesWrapper = window.getComputedStyle(glossyBorder);
+    const stylesPseudoWrapper = window.getComputedStyle(glossyBorder, '::after');
+    const inset = Math.abs(parseInt(stylesPseudoWrapper.inset));
+    const backgroundColor = stylesWrapper.backgroundColor;
+    const borderRadius = stylesWrapper.borderRadius;
+
+    glossyBorder.style.setProperty('--border-radius', borderRadius);
+    glossyBorder.style.setProperty('--border-radius-inset', (parseInt(borderRadius) + inset - 1)+'px' );
+    glossyBorder.style.setProperty('--transition-duration', `.${transitionDuration}s`);
+
+    glossyBorderInner.style.zIndex = '2';
+    glossyBorderInner.style.position = 'relative';
+    glossyBorderInner.style.backgroundColor = backgroundColor;
+    glossyBorderInner.style.borderRadius = borderRadius;
+    glossyBorderInner.style.width = '100%';
+    glossyBorderInner.style.height = '100%';
+
+    setTimeout(()=>{
+      glossyBorder.classList.add('glossy-border--active');
+    }, transitionDuration);
+  }
+
+  const updateRadialGradientOnMousemove = (item: HTMLElement) => {
+    window.addEventListener('mousemove',(e)=>{
+      const { clientX, clientY } = e;
+      const rect = item.getBoundingClientRect();
+      const beforeX = clientX - rect.x + 'px';
+      const beforeY = clientY - rect.y + 'px';
+      item.style.setProperty('--x', beforeX);
+      item.style.setProperty('--y', beforeY);
+    })
+  }
+
+  const getMouseAngle = (event: MouseEvent, element: HTMLElement) => {
+    const rect = element.getBoundingClientRect();
+    const centerX = rect.left + rect.width / 2;
+    const centerY = rect.top + rect.height / 2;
+    const mouseX = event.clientX;
+    const mouseY = event.clientY;
+
+    const dx = mouseX - centerX;
+    const dy = mouseY - centerY;
+
+    const angleRadians = Math.atan2(dy, dx);
+    const angleDegrees = angleRadians * 180 / Math.PI - 90;
+
+    return angleDegrees;
+  }
+
+  const updateLinearGradientOnMousemove = (item: HTMLElement) =>{
+    window.addEventListener('mousemove',(e)=>{
+      const angle = getMouseAngle(e, item);
+      item.style.setProperty('--gradient-degree', angle+'deg');
+    })
+  }
+
+  // Create 
+  const setGlossyBorder = (item: HTMLElement) => {
+    createInnerWrapperArroundAndCloneStyle(item);
+    updateRadialGradientOnMousemove(item);
+    updateLinearGradientOnMousemove(item);
+  };
+
+  // Apply GLossy Border
+  const glossyBorders: NodeListOf<HTMLElement> = document.querySelectorAll('.glossy-border');
+
+  if(glossyBorders.length){
+    glossyBorders.forEach((item) => setGlossyBorder(item))
+  }
+</script>

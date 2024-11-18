@@ -1,0 +1,40 @@
+---
+import Layout from "../../../layouts/Layout.astro";
+import Components from "../../../layouts/Components.astro";
+
+import GlossyBorder from "./glossy-border.astro";
+
+const glossyBorderText = 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Vero numquam autem, a quis quas totam neque consequuntur error quae nam atque. Minus cum architecto odio odit quia, debitis sequi in.';
+const items = [];
+
+for (let i = 0; i < 10; i++) {
+  items.push(glossyBorderText);
+}
+---
+
+<Layout title="test">
+  <Components>
+    <div class="glossy-border-block">
+      {items.map((item) => (
+        <GlossyBorder>
+          <p>{item}</p>
+        </GlossyBorder>
+      ))}
+    </div>
+  </Components>
+</Layout>
+
+<style lang="scss">
+  @use "../../../scss/config" as *;
+  
+  :root{
+    --layout-component--background: #{$gray-900};
+  }
+
+  .glossy-border-block{
+    padding: $gutter;
+    gap: rem(20);
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+</style>

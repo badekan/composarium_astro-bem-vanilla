@@ -1,16 +1,19 @@
 ---
+import { Image } from 'astro:assets';
+
 interface Props {
   nameTxt: string;
   pathUrl: string;
-  srcImg: string;
+  srcImg: ImageMetadata;
+  srcImg2x?: ImageMetadata;
 }
 
-const { nameTxt, pathUrl, srcImg } = Astro.props;
+const { nameTxt, pathUrl, srcImg, srcImg2x } = Astro.props;
 ---
 
 <a class="composarium-item" href={pathUrl}>
   <div class="composarium-item__img-wrap">
-    <img src={srcImg} alt="." />
+    {srcImg && srcImg2x ? ( <Image src={srcImg} srcset={`${srcImg2x.src} 2x`} alt="." /> ) :( <Image src={srcImg} alt="." /> )}
   </div>
   <div class="composarium-item__text-wrap">
     <p class="composarium-item__name">{nameTxt}</p>
@@ -42,14 +45,13 @@ const { nameTxt, pathUrl, srcImg } = Astro.props;
 			border-radius: $radius-lg;
 			margin-bottom: rem(6);
 			background: $gray-200;
-			img{
-				position: absolute;
-				top: 0;
-				left: 0;
-				width: 100%;
-				height: 100%;
-				object-fit: cover;
-			}
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      img{
+        border-radius: $radius-md;
+      }
 		}
 
 
