@@ -1,0 +1,71 @@
+---
+import { Icon } from 'astro-icon/components'
+import Layout from './Layout.astro'
+---
+<Layout title="test">
+  <div class="component-block component-block--fullscreen">
+    <a href="/" class="component-block__back"><Icon name="arrow-prev"/></a>
+    <div class="component-block__container">
+      <slot />
+    </div>
+  </div>
+</Layout>
+
+<style lang="scss">
+  @use "../scss/config" as *;
+
+  :root{
+    --layout-component--background: #{white};
+  }
+
+  .component-block{
+
+    $self: &;
+
+    width: 100%;
+    position: relative;
+    padding: $gutter;
+    display: flex;
+    background: $gray-100;
+    &__container{
+      background: var(--layout-component--background);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      max-width: rem(1296);
+      margin: 0 auto;
+      border-radius: $radius-lg;
+      // border: 1px solid $gray-500;
+    }
+    &__back{
+      position: absolute;
+      left: $gutter;
+      top: $gutter;
+      width: rem(50);
+      height: rem(50);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: $radius-lg;
+      border: 1px solid $gray-500;
+      box-shadow: 0 0 0 rem(20) $gray-100;
+      text-decoration: none;
+      background: $white;
+    }
+
+    &--fullscreen{
+      padding: rem(0);
+      #{$self}__container{
+        max-width: 100%;
+        align-items: flex-start;
+      }
+      #{$self}__back{
+        z-index: 9;
+        box-shadow: none;
+      }
+    }
+
+  }
+  
+</style>

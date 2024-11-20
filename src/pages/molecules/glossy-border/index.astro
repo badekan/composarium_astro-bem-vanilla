@@ -4,11 +4,9 @@ import Components from "../../../layouts/Components.astro";
 
 import GlossyBorder from "./glossy-border.astro";
 
-const glossyBorderText = 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Vero numquam autem, a quis quas totam neque consequuntur error quae nam atque. Minus cum architecto odio odit quia, debitis sequi in.';
 const items = [];
-
-for (let i = 0; i < 10; i++) {
-  items.push(glossyBorderText);
+for (let i = 0; i < 9; i++) {
+  items.push(i+1);
 }
 ---
 
@@ -17,7 +15,7 @@ for (let i = 0; i < 10; i++) {
     <div class="glossy-border-block">
       {items.map((item) => (
         <GlossyBorder>
-          <p>{item}</p>
+          {item}
         </GlossyBorder>
       ))}
     </div>
@@ -32,6 +30,7 @@ for (let i = 0; i < 10; i++) {
   }
 
   .glossy-border-block{
+    width: 100%;
     padding: $gutter;
     gap: rem(20);
     display: grid;

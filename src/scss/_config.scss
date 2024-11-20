@@ -4,14 +4,13 @@
 
 @forward 'config/mixins/center';
 @forward 'config/mixins/cover';
-// @forward 'config/mixins/mq';
+@forward 'config/mixins/media-queries';
 @forward 'config/mixins/placeholder';
 @forward 'config/mixins/pseudo';
 @forward 'config/mixins/reset';
 // @forward 'config/mixins/spacing';
 @forward 'config/mixins/square';
 // @forward 'config/mixins/z-index';
-@forward 'config/mixins/loading';
 @forward 'config/mixins/loading';
 
 @forward 'config/variables';

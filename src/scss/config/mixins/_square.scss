@@ -1,5 +1,7 @@
+@use "../functions/units" as units;
+
 @mixin square($size) {
   flex-shrink: 0;
-  width: rem($size);
-  height: rem($size);
+  width: units.rem($size);
+  height: units.rem($size);
 }

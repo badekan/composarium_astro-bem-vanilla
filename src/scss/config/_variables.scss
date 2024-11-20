@@ -53,17 +53,6 @@ $fw-bold: 700;
 $fw-extrabold: 800;
 $fw-black: 900;
 
-// Media queries
-$breakpoints: (
-  xs: 375,
-  sm: 640,
-  md: 768,
-  lg: 1024,
-  xl: 1280,
-  2xl: 1536,
-  3xl: 1920,
-);
-
 // Z-index
 $z-index-values: ('modal', 'tooltip', 'header', 'base');
 
