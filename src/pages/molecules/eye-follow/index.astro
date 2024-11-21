@@ -1,0 +1,21 @@
+---
+import LayoutComponent from "../../../layouts/LayoutComponent.astro";
+
+import EyeFollow from "../eye-follow/eye-follow.astro";
+---
+
+<LayoutComponent>
+    <div class="eye-follow-container">
+      <EyeFollow/>
+      <EyeFollow/>
+      <EyeFollow/>
+    </div>
+</LayoutComponent>
+
+<style lang="scss">
+  @use "../../../scss/config" as *;
+  .eye-follow-container{
+    display: flex;
+    gap: rem(100);
+  }
+</style>
