@@ -1,150 +1,133 @@
 ---
+import Eye from "./svg/eye.svg?raw";
 ---
 
-<div class="wrapper-1">
-  <div class="wrapper-2">
-    <div class="eye">
-      <div class="pupil"></div>
+<div class="eye-follow wrapper-1">
+  <div class="eye-follow__inner wrapper-2">
+    <div class="eye-follow__eye">
+      <div class="eye-follow__pupil"></div>
     </div>
   </div>
+  <div class="eye-follow__outer"><Fragment set:html={Eye} /></div>
 </div>
-
-<div class="test"></div>
 
 <style lang="scss">
   @use "../../../scss/config" as *;
 
-  // look here also: https://codepen.io/arindam404/pen/qBLVwPd
-  .wrapper-1{
+  $eye-follow--color: var(--eye-follow--color, #{$black});
+
+
+  .eye-follow{
     aspect-ratio: 195 / 111;
-    background: $primary;
     width: rem(157);
-    margin: 0 auto;
-    // margin-left: rem(-300);
-    // margin-top: rem(900);
-    // position: relative;
-
-    // @include center();
-    // top: 10%;
-    // left: 10%;
-    // position: fixed;
     position: relative;
-  }
-  
-  .wrapper-2{
-    // Mask
-    aspect-ratio: 157 / 65;
+    color: $eye-follow--color;
 
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate3d(-50%, -50%, 0);
-    width: 80%;
-    height: auto;
-    // mask-image: url("./svg/eye-mask.svg");
-    // mask-size: 100% 100%;
-    // mask-repeat: no-repeat;
-    // mask-position: center;
-    background-color: $black;
-  }
-  
-  /*Styling for an eye*/
-  .eye{
-    @include center();
-    width: rem(100);
-    height: rem(100);
-    background: transparent;
-    border: 1.5px solid $white;
-    border-radius: 50%;
-    overflow: hidden;
-  }
+    // Layout
+    &__inner{
+      aspect-ratio: 157 / 65;
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate3d(-50%, -48%, 0);
+      width: 80%;
+      height: auto;
+      mask-image: url("./svg/eye-mask.svg");
+      mask-size: 100% 100%;
+      mask-repeat: no-repeat;
+      mask-position: center;
+    }
+    &__outer{
+      position: relative;
+    }
 
-  .pupil{
-    position: absolute;
-    @include square(50);
-    border: 1.5px solid $white;
-    transform: translate3d(0px, -1px, 0px);
-    border-radius: rem(9999);
-    
-    &:after{
-      @include pseudo();
+    // Elements
+    &__eye{
       @include center();
-      @include square(30);
-      background: $white;
-      border-radius: $radius-full;
+      width: rem(100);
+      height: rem(100);
+      background: transparent;
+      border: 1.5px solid currentColor;
+      border-radius: 50%;
+      overflow: hidden;
+    }
+    
+    &__pupil{
+      position: absolute;
+      @include square(50);
+      border: 1.5px solid currentColor;
+      transform: translate3d(0px, -1px, 0px);
+      border-radius: rem(9999);
+      
+      &:after{
+        @include pseudo();
+        @include center();
+        @include square(30);
+        background: currentColor;
+        border-radius: $radius-full;
+      }
     }
   }
+  
 </style>
 
 <script>
-import anime from 'animejs/lib/anime.es.js';
+  // import anime from 'animejs/lib/anime.es.js';
+  class EyeFollow {
+    eye: HTMLElement;
+    pupil: HTMLElement | null;
+    eyeRect: DOMRect;
 
-const eye = document.querySelector('.eye');
-const eyeRect = eye.getBoundingClientRect();
-
-const pupil = document.querySelector('.pupil');
-
-// Récupérer les dimensions de la fenêtre
-const windowWidth = document.documentElement.clientWidth; // window.innerWidth doesn't work because it doesnt take te scroll bar in considération
-const windowHeight = document.documentElement.clientHeight;
-
-// Récupérer le décalage de la position de l'oeil par rapport au centre de l'écrans 
-const leftOffest = ( windowWidth / 2) - (eyeRect.left + eyeRect.width / 2);
-const topOffest = ( windowHeight / 2) - (eyeRect.top + eyeRect.height / 2);
-
-// Fonction pour mettre à jour la position de la pupille
-function movePupil(e) {
-console.log('e:', e)
-
-  // Calculer la position du curseur par rapport au centre de la fenêtre
-  const xPercent = ((e.clientX + leftOffest) / windowWidth) ;
-  const yPercent = ((e.clientY + topOffest) / windowHeight);
-
-  const maxOffset = eyeRect.width / 2; 
-
-  const newLeft = xPercent * maxOffset;
-  const newTop = yPercent * maxOffset;
-
-  // Appliquer la nouvelle position à la pupille
-  // pupil.style.left = newLeft + 'px';
-  // pupil.style.top = newTop + 'px';
-
-  // Anime if there is a debounce
-  anime({
-    targets: pupil,
-    left: newLeft,
-    top: newTop,
-    duration: 300,
-    easing: 'easeOutCirc'
-  });
-}
-
-// Écouter les mouvements de la souris sur tout le document
-// document.addEventListener('mousemove', movePupil);
+    constructor(eye: HTMLElement) {
+      this.eye = eye;
+      this.pupil = this.eye.querySelector('.eye-follow__pupil');
+      this.eyeRect = this.eye.getBoundingClientRect();
+      document.addEventListener('mousemove', this.movePupil.bind(this));
+    }
 
 
-// function throttle(func, limit) {
-//   let lastFunc;
-//   let lastRan;
-//   return function(...args) {
-//     const context = this;
-//     if (!lastRan) {
-//       func.apply(context, args);
-//       lastRan = Date.now();
-//     } else {
-//       clearTimeout(lastFunc);
-//       lastFunc = setTimeout(function() {
-//         if ((Date.now() - lastRan) >= limit) {
-//           func.apply(context, args);
-//           lastRan = Date.now();
-//         }
-//       }, limit - (Date.now() - lastRan));
-//     }
-//   };
-// }
+    clamp(value: number, min:number, max:number) {
+      return Math.max(min, Math.min(max, value));
+    }
 
-// Écouter les mouvements de la souris sur tout le document avec debounce
-// document.addEventListener('mousemove', throttle(movePupil, 0));
-document.addEventListener('mousemove', movePupil);
+    movePupil(e: MouseEvent){ 
+      const eyeRect = this.eyeRect;
+      const windowWidth = document.documentElement.clientWidth; // window.innerWidth doesn't work because it doesnt take te scroll bar in considération
+      const windowHeight = document.documentElement.clientHeight;
+
+      // Récupérer le décalage de la position de l'oeil par rapport au centre de l'écrans 
+      const leftOffest = ( windowWidth / 2) - (eyeRect.left + eyeRect.width / 2);
+      const topOffest = ( windowHeight / 2) - (eyeRect.top + eyeRect.height / 2);
+
+      // Calculer la position du curseur par rapport au centre de la fenêtre
+      const xPercent = ((e.clientX + leftOffest) / windowWidth) ;
+      const yPercent = ((e.clientY + topOffest) / windowHeight);
+
+      const maxOffset = eyeRect.width / 2; 
+
+      let newLeft = xPercent * maxOffset;
+      newLeft = this.clamp(newLeft, 0, maxOffset);
+
+      let newTop = yPercent * maxOffset;
+      newTop = this.clamp(newTop, 0, maxOffset);
+
+      if(this.pupil){
+        this.pupil.style.left = newLeft + 'px';
+        this.pupil.style.top = newTop + 'px';
+      }
+
+      // // Anime if there is a debounce
+      // anime({
+      //   targets: this.pupil,
+      //   left: newLeft, // pupil.style.left = newLeft + 'px';
+      //   top: newTop, // pupil.style.top = newTop + 'px';
+      //   duration: 200,
+      //   easing: 'easeOutCirc'
+      // });
+    }
+  }
+
+  const eyes = document.querySelectorAll('.eye-follow__eye');
+  eyes.forEach(eye => new EyeFollow(eye as HTMLElement));
 </script>
 

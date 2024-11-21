@@ -1,3 +1,5 @@
+// Don't ever us this as noise, it slow down the performance of the borwser a lot!
+
 // technique for this demo found here 
 // http://stackoverflow.com/questions/22003491/animating-canvas-to-look-like-tv-noise    
 const app = document.querySelector('#lavaLamp');

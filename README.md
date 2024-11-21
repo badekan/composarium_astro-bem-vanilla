@@ -3,8 +3,9 @@
 A modular collection of pre-built UI components designed with Astro, BEM, and vanilla JavaScript.
 
 ## To do list
-- [ ] Lava lamp component
-- [ ] Eye folow component
+- [x] Lava lamp component
+- [x] Eye folow component
+- [x] Create a lightweight noise texture, maybe without javascript
 - [ ] Header sticky component
 - [ ] Modal component
 - [ ] Accordion component

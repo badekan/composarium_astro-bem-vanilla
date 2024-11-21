@@ -1,11 +1,12 @@
 ---
 import LayoutComponent from "../../../layouts/LayoutComponent.astro";
 import LavaLamp from "./lava-lamp.astro";
+import EyeFollow from "../../molecules/eye-follow/eye-follow.astro";
+import Noise from "../../molecules/noise/noise.astro";
 
 import Column from "./svg/column.svg?raw";
 import Plateau from "./svg/plateau.svg?raw";
 import Wave from "./svg/wave.svg?raw";
-import Eye from "./svg/eye.svg?raw";
 ---
 
 <LayoutComponent title="test">
@@ -16,14 +17,17 @@ import Eye from "./svg/eye.svg?raw";
         <span class="sm">The</span>
         <span class="md">Lava Lamp</span>
         <span class="sm">of</span>
-        <span class="md">Mother fucker</span>
+        <span class="md">Digital Dreams</span>
       </h1>
       <div class="section-lava-lamp__plateau"><Fragment set:html={Plateau} /></div>
       <div class="section-lava-lamp__eye">
-         <div class="section-lava-lamp__eye-container"><div class="eye"><div class="pupil"></div></div></div>
-         <Fragment set:html={Eye} />
+         <EyeFollow/>
       </div>
       <div class="section-lava-lamp__column section-lava-lamp__column--right"><Fragment set:html={Column} /></div>
+    </div>
+    <button class="button">button</button>
+    <div class="section-lava-lamp__noise">
+        <Noise/>
     </div>
     <LavaLamp class="section-lava-lamp__background"/>
     <div class="section-lava-lamp__wave"><Fragment set:html={Wave} /></div>
@@ -36,8 +40,6 @@ import Eye from "./svg/eye.svg?raw";
 
   .section-lava-lamp{
     position: relative;
-    // min-height: 100vh;
-    // min-width: 100vw;
     width: 100%;
   
     font-family: "Grenze", serif;
@@ -81,12 +83,19 @@ import Eye from "./svg/eye.svg?raw";
       height: 100%;
       z-index: 1;
     }
+    
+    &__noise{
+      @include cover();
+      overflow: hidden;
+      z-index: 2;
+    }
+
     &__wave{
       position: absolute;
       left: 0;
       bottom: 0;
       width: 100%;
-      z-index: 2;
+      z-index: 3;
     }
 
     // Elements
@@ -117,6 +126,17 @@ import Eye from "./svg/eye.svg?raw";
           font-size: 3.5vw;
         }
       }
+    }
+
+    &__eye{
+      --eye-follow--color: #{$white};
+      display: flex;
+      justify-content: center;
+      margin-top: rem(-300);
+      @media screen and (max-width: '1350px'){ // Breakpoint of column becoming smaller
+        margin-top: -22vw;
+      }
+
     }
 
     svg{
