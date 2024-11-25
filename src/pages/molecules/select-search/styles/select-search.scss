@@ -1,0 +1,199 @@
+@use "../../../../scss/config" as *;
+
+// Global
+$select--height: rem(60);
+$select--primary: $black;
+$select--background: $white;
+$select--color: $black;
+$select--border-color: $black;
+$select--transition: all 0.2s ease,
+  outline 0s linear;
+// Border
+$select--radius: 0;
+$select--border-size: rem(1);
+// Padding
+$select--ptb: rem(10);
+$select--plr: rem(0);
+
+.select-search{
+  $self: &;
+  position: relative;
+  width: 100%;
+  &__input-container{
+    position: relative;
+    display: inline-block;
+    width: 100%;
+    vertical-align: top;
+  }
+  &__label{
+    position: absolute;
+    left: 0; top: 0;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    height: $select--height;
+    transition: $select--transition;
+  }
+  &__button-input{
+    display: block;
+    width: 100%;
+    height: $select--height;
+    padding: $select--ptb $select--plr;
+    padding-right: rem(37.5);
+    font-size: $fs-base;
+    color: $select--color;
+    -webkit-appearance: none;
+    cursor: pointer;
+    background: $select--background;
+    border: none;
+    border-bottom: $select--border-size solid $select--border-color;
+    border-radius: $select--radius;
+    outline: none;
+    box-shadow: none;
+    transition: all .3s ease;
+    position: relative;
+    
+    &:after {
+      @include arrow($select--primary);
+      right: rem(18);
+      z-index: 4;
+    }
+  }
+  &__dropdown{
+    position: absolute;
+    left: 0; bottom: rem(1);
+    width: 100%;
+    transform: translate3d(0,100%,0);
+  }
+  
+  // Modifiers 
+  &--filled{
+    #{$self}__label{
+      z-index: 3;
+      height: calc($select--height / 3);
+      font-size: rem(14);
+    }
+  }
+}
+
+
+.select-search-dropdown{
+  pointer-events: none;
+  opacity: 0;
+  transition: all .3s ease;
+  width: 100%;
+  border: 1px solid $black;
+  background: $white;
+  
+  // Layout
+  &__head{
+    padding: 0 rem(17) rem(17) rem(17);
+  }
+  &__body{
+    height: rem(130);
+    max-height: rem(140);
+    padding: 0 rem(7);
+  }
+  &__foot{
+    padding: 0 rem(17) rem(17) rem(17);
+  }
+
+  &__input{
+    height: $select--height;
+    padding: rem(10) 0;
+    border: none;
+    border-bottom: 1px solid $black;
+    display: block;
+    width: 100%;
+
+    max-width: 100%;
+    outline: none;
+  }
+  &__separator{
+    display: flex;
+    justify-content: center;
+    position: relative;
+    span{
+      position: relative;
+      z-index: 2;
+      padding: rem(10);
+      background: $white;
+    }
+    &:after{
+      @include pseudo();
+      left: 0;
+      top: 50%;
+      width: 100%;
+      height: rem(1);
+      background: $black;
+    }
+  }
+
+
+  // Modifier
+  &--open{
+    pointer-events: initial;
+    opacity: 1;
+  }
+}
+
+.select-search-item{
+  $self: '.select-search-item';
+
+  cursor: pointer;
+  display: flex;
+  width: 100%;
+  flex-wrap: wrap;
+  gap: rem(0) rem(7);
+  line-height: 1.125;
+  color: $black;
+  padding: rem(5) rem(10);
+  background-color: transparent;
+  position: relative;
+  border-radius: $radius-md;
+  transition: $select--transition;
+
+  &__name{
+    font-weight: $fw-bold;
+    white-space: nowrap;
+  }
+  &__address{
+    font-weight: $fw-regular;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  // State
+  &:hover:not(#{$self}--unselectable){
+    background: rgba($black, .05);
+    
+  }
+
+  // Modifier
+  &--unselectable{
+    flex-wrap: nowrap;
+    padding: 0;
+  }
+  
+}
+
+.select-search-extraitem{
+  cursor: pointer;
+  margin-bottom: rem(15);
+  display: flex;
+  align-items: center;
+  margin: 0 auto;
+  gap: rem(5);
+  font-weight: $fw-bold;
+  background-color: transparent;
+  text-decoration: underline;
+  padding: rem(5) rem(10);
+  transition: $select--transition;
+
+  // State
+  &:hover{
+    background: rgba($black, .05);
+  }
+}

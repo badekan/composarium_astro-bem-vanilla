@@ -1,0 +1,63 @@
+---
+import Layout from "../../../layouts/Layout.astro";
+import Components from "../../../layouts/Components.astro";
+
+import SelectSearch from "./select-search.jsx";
+import selectSearchItems from "./data/data.jsx";
+import type { SelectSearchExtraItem } from "./select-search.jsx";
+import type { SelectSearchProps } from "./select-search.jsx";
+
+// const selectSearchItems: SelectSearchItem = {
+//   value: 'prout',
+//   label: 'A&M Lanklaar Vilvertstraat 8, 3650 Lanklaar',
+// };
+
+const selectSearchExtraItem: SelectSearchExtraItem = {
+  separator: 'or',
+  value: 'vallue',
+  label: 'Map view',
+  icon: '<svg xmlns="http://www.w3.org/2000/svg" width="13" height="12" viewBox="0 0 13 12"><path fill="none" stroke="#000" d="M5.6,9.30004 L4,10.15004 M4,10.15004 L4,1.9 M4,10.15004 L0,8 L0,0 L4,1.9 M4,1.9 L7.5,0 M7.5,0 L11,2.1 L11,10.10004 L9.5,9.25004 M7.5,0 L7.5,2.1 M5.5,5.3 C5.5,4.25 6.35,3.35 7.4,3.35 C7.45,3.35 7.45,3.35 7.5,3.35 C8.6,3.35 9.5,4.25 9.5,5.35 C9.5,6.45 7.5,9.40004 7.5,9.40004 C7.5,9.40004 5.55,6.55 5.5,5.4 C5.5,5.35 5.5,5.35 5.5,5.3 Z" transform="translate(1 1)"/></svg>',
+  eventValue: 'open-modal',
+}
+
+const selectSearchProps: SelectSearchProps = {
+  label: 'Select a dealership',
+  // items: [selectSearchItems],
+  items: selectSearchItems,
+  extraItem: selectSearchExtraItem,
+  targetInput: "#pomme",
+}
+---
+
+<Layout title="test">
+  <Components>
+      <div class="select-search-component">
+        <input class="select-search-component__input-eg" type="text" id="pomme">
+        <SelectSearch {...selectSearchProps} client:only />
+      </div>
+  </Components>
+</Layout>
+<script>
+  window.addEventListener('selectSearchExtraItem', (event) => {
+    console.log('Received custom event:', event.detail.value);
+    // Do something with the received value
+  });
+</script>
+<style lang="scss">
+  @use "../../../scss/config" as *;
+  
+  .select-search-component{
+    width: rem(520);
+    display: flex;
+    flex-direction: column;
+    gap: rem(20);
+    &__input-eg{
+      pointer-events: none;
+      width: 100%;
+      padding: rem(10);
+      background: $gray-200;
+      border: none;
+      border-radius: rem(5);
+    }
+  }
+</style>
