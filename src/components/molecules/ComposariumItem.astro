@@ -4,7 +4,7 @@ import { Image } from 'astro:assets';
 interface Props {
   nameTxt: string;
   pathUrl: string;
-  srcImg: ImageMetadata;
+  srcImg?: ImageMetadata;
   srcImg2x?: ImageMetadata;
 }
 
@@ -13,7 +13,7 @@ const { nameTxt, pathUrl, srcImg, srcImg2x } = Astro.props;
 
 <a class="composarium-item" href={pathUrl}>
   <div class="composarium-item__img-wrap">
-    {srcImg && srcImg2x ? ( <Image src={srcImg} srcset={`${srcImg2x.src} 2x`} alt="." /> ) :( <Image src={srcImg} alt="." /> )}
+    <!-- {srcImg && srcImg2x ? ( <Image src={srcImg} srcset={`${srcImg2x.src} 2x`} alt="." /> ) :( <Image src={srcImg} alt="." /> )} -->
   </div>
   <div class="composarium-item__text-wrap">
     <p class="composarium-item__name">{nameTxt}</p>

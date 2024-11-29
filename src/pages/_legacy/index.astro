@@ -1,0 +1,357 @@
+---
+import { Image } from 'astro:assets';
+
+import Layout from '../layouts/Layout.astro';
+import ComposariumItem from '../components/molecules/ComposariumItem.astro';
+
+
+import ImgButton from '../img/button.png'; 
+import ImgButton2x from '../img/button@2x.png'; 
+
+import ImgUnderlineAnimated from '../img/underline-animated.png'; 
+
+import ImgGlossyBorder from '../img/glossy-border.png'; 
+import ImgGlossyBorder2x from '../img/glossy-border@2x.png'; 
+
+import ImgLavaLamp from '../img/lava-lamp.jpg'; 
+import ImgLavaLamp2x from '../img/lava-lamp@2x.jpg'; 
+
+import ImgEyeFollow from '../img/eye-follow.png'; 
+import ImgEyeFollow2x from '../img/eye-follow@2x.png'; 
+
+import ImgNoise from '../img/noise.png'; 
+
+const items = [
+	{
+		name: "Atoms",
+		items: [
+			{
+				name: "Button",
+				path: "/atoms/button",
+				src: ImgButton,
+				src2x: ImgButton2x,
+			},
+			{
+				name: "Underline Animated",
+				path: "/atoms/underline-animated",
+				src: ImgUnderlineAnimated,
+			},
+		]
+	},
+	{
+		name: "Molecules",
+		items: [
+			{
+				name: "Select Search",
+				path: "/molecules/select-search",
+				src: ImgNoise,
+				src2x: ImgNoise,
+			},
+		],
+	},
+	{
+		name: "Oganisms",
+		items: [
+			{
+				name: "Header",
+				path: "/organisms/header",
+				src: ImgNoise,
+				src2x: ImgNoise,
+			},
+		],
+		// "subitems": [
+		// 	{
+		// 		"name": "Header",
+		// 		"items": [
+		// 			{
+		// 				"name": "Header",
+		// 				"path": "/organisms/header",
+		// 				"src": ImgButton,
+		// 			},
+		// 			{
+		// 				"name": "Header Item",
+		// 				"path": "/organisms/header",
+		// 				"src": ImgButton,
+		// 			},
+		// 		]
+		// 	},
+		// 	{
+		// 		"name": "Footer",
+		// 		"items": [
+		// 			{
+		// 				"name": "Footer",
+		// 				"path": "/organisms/footer",
+		// 				"src": ImgButton,
+		// 			},
+		// 			{
+		// 				"name": "Footer Item",
+		// 				"path": "/organisms/footer",
+		// 				"src": ImgButton,
+		// 			},
+		// 		]
+		// 	}
+		// ]
+	},
+	{
+		isSpecial: true,
+		name: "Specials",
+		description: "Special & Features",
+		items: [
+			{
+				name: "Glossy Border",
+				path: "/specials/glossy-border",
+				src: ImgGlossyBorder,
+				src2x: ImgGlossyBorder2x,
+			},
+			{
+				name: "Eye follow",
+				path: "/specials/eye-follow",
+				src: ImgEyeFollow,
+				src2x: ImgEyeFollow2x,
+			},
+			{
+				name: "Noise",
+				path: "/specials/noise",
+				src: ImgNoise,
+				src2x: ImgNoise,
+			},
+			{
+				name: "Lava Lamp",
+				path: "/specials/lava-lamp",
+				src: ImgLavaLamp,
+				src2x: ImgLavaLamp2x,
+			},
+			{
+				name: "Header Sticky",
+				path: "/specials/header-sticky",
+				src: ImgNoise,
+				src2x: ImgNoise,
+			},
+		],
+		// "subitems": [
+		// 	{
+		// 		"name": "Header",
+		// 		"items": [
+		// 			{
+		// 				"name": "Header",
+		// 				"path": "/organisms/header",
+		// 				"src": ImgButton,
+		// 			},
+		// 			{
+		// 				"name": "Header Item",
+		// 				"path": "/organisms/header",
+		// 				"src": ImgButton,
+		// 			},
+		// 		]
+		// 	},
+		// 	{
+		// 		"name": "Footer",
+		// 		"items": [
+		// 			{
+		// 				"name": "Footer",
+		// 				"path": "/organisms/footer",
+		// 				"src": ImgButton,
+		// 			},
+		// 			{
+		// 				"name": "Footer Item",
+		// 				"path": "/organisms/footer",
+		// 				"src": ImgButton,
+		// 			},
+		// 		]
+		// 	}
+		// ]
+	},
+];
+
+---
+
+<Layout title="Welcome to Astro.">
+	<main class="container">
+
+		<div class="composarium-head">
+			<h1 class="composarium-head__title">Composarium</h1>
+			<ul class="composarium-head__tags">
+				<li class="composarium-head__tag">
+					astro
+				</li>
+				<li class="composarium-head__tag">
+					bem
+				</li>
+				<li class="composarium-head__tag">
+					vanilla
+				</li>
+			</ul>
+			<div class="composarium-head__description">
+				<p>
+					A modular collection of pre-built UI components designed with Astro, BEM, and vanilla JavaScript.
+				</p>
+			</div>
+		</div>
+
+		<ul class="composarium-list-category">
+			{items.map((item) => (
+				<li class:list={["composarium-list-category__el", item.isSpecial && "composarium-list-category__el--special"]}>
+					<h2 class="composarium-list-category__title">{item.name}</h2>
+					<div class="composarium-list-category__items">
+						{item.items && (
+							<ul class="composarium-list-component">
+								{item.items.map((subitem) => (
+									<li class="composarium-list-component__el">
+										<ComposariumItem 
+											nameTxt={subitem.name}
+											pathUrl={subitem.path}
+											srcImg={subitem.src}
+											srcImg2x={subitem.src2x}/>
+									</li>
+								))}
+							</ul>
+						)}
+					{item.subitems && (
+						<ul class="composarium-list-subcategory">
+							{item.subitems.map((subitem) => (
+								<li class="composarium-list-subcategory__el">
+									<h3 class="composarium-list-subcategory__title">{subitem.name}</h3>
+									<div class="composarium-list-subcategory__items">
+										<ul class="composarium-list-subcomponents">
+											{subitem.items.map((subsubitem) => (
+												<li class="composarium-list-subcomponents__el">
+													<ComposariumItem 
+														nameTxt={subsubitem.name}
+														pathUrl={subsubitem.path}
+														srcImg={subsubitem.src} />
+												</li>
+											))}
+										</ul>
+									</div>
+								</li>
+							))}
+						</ul>
+					)}
+					</div>
+
+				</li>
+			))}
+		</ul>
+	</main>
+</Layout>
+
+<style lang="scss">
+	@use "../scss/config" as *;
+
+	.container{
+		// container
+		display: block;
+		width: 100%;
+		max-width: rem(1296);
+		margin: 0 auto;
+		// container
+	}
+
+	// Head Composarium
+	.composarium-head{
+		margin-bottom: rem(40);
+		&__title{
+			font-size: $fs-4xl;
+			font-weight: $fw-bold;
+			margin-bottom: rem(10);
+		}
+		&__tags{
+			display: flex;
+			gap: rem(10);
+			margin-bottom: rem(20);
+		}
+		&__tag{
+			padding: rem(0) rem(7);
+			font-size: $fs-base;
+			background: $gray-300;
+			border-radius: $radius-base;
+		}
+		&__description{
+		}
+	}
+	
+	// Composarium Lists
+	$composarium-list--category-gutter: rem(40); 
+	$composarium-list--category-border-color: $gray-400; 
+	$composarium-list--subcategory-border-color: $gray-300; 
+	$composarium-list--component-gutter: rem(20); 
+	
+	.composarium-list-category{
+		margin-bottom: rem(100);
+		&__el--special{
+			position: relative;
+			&:before{
+				@include pseudo();
+				left: rem(-40); top: rem(-1);
+				width: calc(100% + #{rem(80)});
+				height: 100%;
+				background: $gray-200;
+				border-radius: $radius-3xl;
+				border: rem(1) solid $composarium-list--category-border-color;
+			}
+		}
+	}
+
+	.composarium-list-category, .composarium-list-subcategory{
+		width: 100%;
+		&__el{
+			position: relative;
+		}
+
+		&__title{
+			position: absolute;
+			left: 0;
+			top: $composarium-list--category-gutter;
+			width: 28%;
+			flex-shrink: 0;
+			align-self: flex-start;
+			font-weight: $fw-bold;
+		}
+		&__items{
+			width: 100%;
+			display: flex;
+			align-items: flex-end;
+			flex-direction: column;
+		}
+
+	}	
+
+
+	.composarium-list-category{
+		&__el{
+			padding: $composarium-list--category-gutter 0;
+			border-top: 1px solid $composarium-list--category-border-color;
+		}
+	}
+
+	.composarium-list-subcategory{
+		&__el{
+			padding: $composarium-list--category-gutter 0;
+			border-top: 1px solid $composarium-list--subcategory-border-color;
+		}
+	}
+
+	.composarium-list-category{
+		&__title{
+			font-size: $fs-xl;
+			font-weight: $fw-bold;
+		}
+	}
+
+	.composarium-list-subcategory{
+		margin-top: $composarium-list--category-gutter; 
+		&__title{
+			font-size: $fs-lg;
+			font-weight: $fw-regular;
+		}
+	}
+
+	.composarium-list-component, .composarium-list-subcomponents{
+		display: grid;
+		width: 70%;
+		gap: $composarium-list--component-gutter;
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+		&__el{
+		}
+	}
+</style>

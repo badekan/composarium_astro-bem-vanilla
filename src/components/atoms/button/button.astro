@@ -20,8 +20,8 @@ type Props = CommonProps & HTMLAttributes<"button"> & HTMLAttributes<"a">;
 
 const { tag, variant, isLoading, ...props } = Astro.props as Props;
 const Tag = tag ? tag : "a";
-const classVariant = variant ? `button--${variant}` : "";
-const classLoading = isLoading ? `button--loading` : "";
+const classVariant = variant && `button--${variant}`;
+const classLoading = isLoading && `button--loading`;
 ---
 
 <Tag class:list={["button", classVariant, classLoading, props.class]} {...props}>

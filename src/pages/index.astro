@@ -1,135 +1,44 @@
 ---
-import { Image } from 'astro:assets';
-
 import Layout from '../layouts/Layout.astro';
 import ComposariumItem from '../components/molecules/ComposariumItem.astro';
 
+import { getCollection } from 'astro:content';
 
-import ImgButton from '../img/button.png'; 
-import ImgButton2x from '../img/button@2x.png'; 
+// Get all `src/content/blog/` entries
+const allComponents = await getCollection('components');
+const allCategory = await getCollection('category');
+const allSubcategory = await getCollection('subcategory');
 
-import ImgUnderlineAnimated from '../img/underline-animated.png'; 
+const componentsItems = allComponents.map((item) => {
+	return {
+		path: 'components/'+item.slug,
+		title: item.data.title,
+		description: item.data.description,
+		category: item.data.category.slug,
+		subcategory: item.data.subcategory && item.data.subcategory.slug,
+	}
+});
 
-import ImgGlossyBorder from '../img/glossy-border.png'; 
-import ImgGlossyBorder2x from '../img/glossy-border@2x.png'; 
+const subcategoryItems = allSubcategory.map((subcategoryItem) => {
+	return {
+		title: subcategoryItem.data.title,
+		category: subcategoryItem.data.category.slug,
+		componentsItems: componentsItems.filter((componentItem) => componentItem.subcategory === subcategoryItem.slug),
+	}
+});
 
-import ImgLavaLamp from '../img/lava-lamp.jpg'; 
-import ImgLavaLamp2x from '../img/lava-lamp@2x.jpg'; 
+const categoryItems = allCategory.map((categoryItem) => {
+	
+	const subcategoryItemsData = subcategoryItems.filter((subcategoryItem) => subcategoryItem.category === categoryItem.slug);
 
-import ImgEyeFollow from '../img/eye-follow.png'; 
-import ImgEyeFollow2x from '../img/eye-follow@2x.png'; 
+	return {
+		title: categoryItem.data.title,
+		isSpecial: categoryItem.data.isSpecial,
+		componentsItems: componentsItems.filter((componentItem) => componentItem.category === categoryItem.slug && !componentItem.subcategory ),
+		subcategoryItems: subcategoryItemsData.length > 0 && subcategoryItemsData,
+	}
+});
 
-import ImgNoise from '../img/noise.png'; 
-
-const items = [
-	{
-		name: "Atoms",
-		items: [
-			{
-				name: "Button",
-				path: "/atoms/button",
-				src: ImgButton,
-				src2x: ImgButton2x,
-			},
-			{
-				name: "Underline Animated",
-				path: "/atoms/underline-animated",
-				src: ImgUnderlineAnimated,
-			},
-		]
-	},
-	{
-		name: "Molecules",
-		items: [
-			{
-				name: "Select Search",
-				path: "/molecules/select-search",
-				src: ImgNoise,
-				src2x: ImgNoise,
-			},
-		],
-	},
-	{
-		name: "Oganisms",
-		items: [
-			{
-				name: "Header",
-				path: "/organisms/header",
-				src: ImgNoise,
-				src2x: ImgNoise,
-			},
-		],
-		// "subitems": [
-		// 	{
-		// 		"name": "Header",
-		// 		"items": [
-		// 			{
-		// 				"name": "Header",
-		// 				"path": "/organisms/header",
-		// 				"src": ImgButton,
-		// 			},
-		// 			{
-		// 				"name": "Header Item",
-		// 				"path": "/organisms/header",
-		// 				"src": ImgButton,
-		// 			},
-		// 		]
-		// 	},
-		// 	{
-		// 		"name": "Footer",
-		// 		"items": [
-		// 			{
-		// 				"name": "Footer",
-		// 				"path": "/organisms/footer",
-		// 				"src": ImgButton,
-		// 			},
-		// 			{
-		// 				"name": "Footer Item",
-		// 				"path": "/organisms/footer",
-		// 				"src": ImgButton,
-		// 			},
-		// 		]
-		// 	}
-		// ]
-	},
-	{
-		isSpecial: true,
-		name: "Specials",
-		description: "Special & Features",
-		items: [
-			{
-				name: "Glossy Border",
-				path: "/specials/glossy-border",
-				src: ImgGlossyBorder,
-				src2x: ImgGlossyBorder2x,
-			},
-			{
-				name: "Eye follow",
-				path: "/specials/eye-follow",
-				src: ImgEyeFollow,
-				src2x: ImgEyeFollow2x,
-			},
-			{
-				name: "Noise",
-				path: "/specials/noise",
-				src: ImgNoise,
-				src2x: ImgNoise,
-			},
-			{
-				name: "Lava Lamp",
-				path: "/specials/lava-lamp",
-				src: ImgLavaLamp,
-				src2x: ImgLavaLamp2x,
-			},
-			{
-				name: "Header Sticky",
-				path: "/specials/header-sticky",
-				src: ImgNoise,
-				src2x: ImgNoise,
-			},
-		],
-	},
-];
 
 ---
 
@@ -157,48 +66,51 @@ const items = [
 		</div>
 
 		<ul class="composarium-list-category">
-			{items.map((item) => (
-				<li class:list={["composarium-list-category__el", item.isSpecial && "composarium-list-category__el--special"]}>
-					<h2 class="composarium-list-category__title">{item.name}</h2>
+			{/* categoryItems */}
+			{categoryItems.map((categoryItem) => (
+				<li class:list={["composarium-list-category__el", categoryItem.isSpecial && "composarium-list-category__el--special"]}>
+					<h2 class="composarium-list-category__title">
+						{categoryItem.title}
+					</h2>
 					<div class="composarium-list-category__items">
-						{item.items && (
+						{/* componentsItems */}
+						{categoryItem.componentsItems && (
 							<ul class="composarium-list-component">
-								{item.items.map((subitem) => (
+								{categoryItem.componentsItems.map((componentsItem) => (
 									<li class="composarium-list-component__el">
 										<ComposariumItem 
-											nameTxt={subitem.name}
-											pathUrl={subitem.path}
-											srcImg={subitem.src}
-											srcImg2x={subitem.src2x}/>
+											nameTxt={componentsItem.title}
+											pathUrl={componentsItem.path}
+											/>
 									</li>
 								))}
 							</ul>
 						)}
-					{item.subitems && (
-						<ul class="composarium-list-subcategory">
-							{item.subitems.map((subitem) => (
-								<li class="composarium-list-subcategory__el">
-									<h3 class="composarium-list-subcategory__title">{subitem.name}</h3>
-									<div class="composarium-list-subcategory__items">
-										<ul class="composarium-list-subcomponents">
-											{subitem.items.map((subsubitem) => (
-												<li class="composarium-list-subcomponents__el">
-													<ComposariumItem 
-														nameTxt={subsubitem.name}
-														pathUrl={subsubitem.path}
-														srcImg={subsubitem.src} />
-												</li>
-											))}
-										</ul>
-									</div>
-								</li>
-							))}
-						</ul>
-					)}
+						{/* subcategoryItems */}
+						{categoryItem.subcategoryItems && (
+							<ul class="composarium-list-subcategory">
+								{categoryItem.subcategoryItems.map((subcategoryItem) => (
+									<li class="composarium-list-subcategory__el">
+										<h3 class="composarium-list-subcategory__title">{subcategoryItem.title}</h3>
+										<div class="composarium-list-subcategory__items">
+											<ul class="composarium-list-subcomponents">
+												{subcategoryItem.componentsItems.map((componentsItem) => (
+													<li class="composarium-list-subcomponents__el">
+														<ComposariumItem 
+															nameTxt={componentsItem.title}
+															pathUrl={componentsItem.path} />
+													</li>
+												))}
+											</ul>
+										</div>
+									</li>
+								))}
+							</ul>
+						)}
 					</div>
-
 				</li>
 			))}
+			
 		</ul>
 	</main>
 </Layout>
@@ -296,6 +208,9 @@ const items = [
 		&__el{
 			padding: $composarium-list--category-gutter 0;
 			border-top: 1px solid $composarium-list--subcategory-border-color;
+			&:last-child{
+				padding-bottom: 0;
+			}
 		}
 	}
 
