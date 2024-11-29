@@ -1,6 +1,6 @@
 ---
 import Layout from "../../../layouts/Layout.astro";
-import Components from "../../../layouts/Components.astro";
+import LayoutComponent from "../../../layouts/LayoutComponent.astro";
 
 import SelectSearch from "./select-search.jsx";
 import selectSearchItems from "./data/data.jsx";
@@ -28,15 +28,12 @@ const selectSearchProps: SelectSearchProps = {
   targetInput: "#pomme",
 }
 ---
-
-<Layout title="test">
-  <Components>
-      <div class="select-search-component">
-        <input class="select-search-component__input-eg" type="text" id="pomme">
-        <SelectSearch {...selectSearchProps} client:only />
-      </div>
-  </Components>
-</Layout>
+<LayoutComponent>
+    <div class="select-search-component">
+      <input class="select-search-component__input-eg" type="text" id="pomme">
+      <SelectSearch {...selectSearchProps} client:only />
+    </div>
+</LayoutComponent>
 <script>
   window.addEventListener('selectSearchExtraItem', (event) => {
     console.log('Received custom event:', event.detail.value);

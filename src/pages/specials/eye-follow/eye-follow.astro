@@ -92,14 +92,12 @@ import Eye from "./svg/eye.svg?raw";
 
     movePupil(e: MouseEvent){ 
       const eyeRect = this.eyeRect;
-      const windowWidth = document.documentElement.clientWidth; // window.innerWidth doesn't work because it doesnt take te scroll bar in considération
+      const windowWidth = document.documentElement.clientWidth;
       const windowHeight = document.documentElement.clientHeight;
 
-      // Récupérer le décalage de la position de l'oeil par rapport au centre de l'écrans 
       const leftOffest = ( windowWidth / 2) - (eyeRect.left + eyeRect.width / 2);
       const topOffest = ( windowHeight / 2) - (eyeRect.top + eyeRect.height / 2);
 
-      // Calculer la position du curseur par rapport au centre de la fenêtre
       const xPercent = ((e.clientX + leftOffest) / windowWidth) ;
       const yPercent = ((e.clientY + topOffest) / windowHeight);
 

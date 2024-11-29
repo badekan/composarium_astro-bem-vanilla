@@ -1,6 +1,6 @@
 ---
 import Layout from "../../../layouts/Layout.astro";
-import Components from "../../../layouts/Components.astro";
+import LayoutComponent from "../../../layouts/LayoutComponent.astro";
 
 import GlossyBorder from "./glossy-border.astro";
 
@@ -10,17 +10,15 @@ for (let i = 0; i < 9; i++) {
 }
 ---
 
-<Layout title="test">
-  <Components>
-    <div class="glossy-border-block">
-      {items.map((item) => (
-        <GlossyBorder>
-          {item}
-        </GlossyBorder>
-      ))}
-    </div>
-  </Components>
-</Layout>
+<LayoutComponent>
+  <div class="glossy-border-block">
+    {items.map((item) => (
+      <GlossyBorder>
+        {item}
+      </GlossyBorder>
+    ))}
+  </div>
+</LayoutComponent>
 
 <style lang="scss">
   @use "../../../scss/config" as *;

@@ -1,0 +1,44 @@
+---
+import LayoutComponent from "../../../layouts/LayoutComponent.astro";
+import headerProps from "../../organisms/header/data/header";
+import Header from "../../organisms/header/header.astro";
+import HeaderSticky from "./header-sticky.astro";
+---
+
+<LayoutComponent isFullScreen hasBackLinkBelow>
+  <div class="header-sticky-layout">
+    <HeaderSticky>
+      <Header {...headerProps} />
+    </HeaderSticky>
+    <ul class="header-sticky-layout__body">
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+    </ul>
+  </div>
+</LayoutComponent>
+
+<style lang="scss" is:global>
+  @use "../../../scss/config" as *;
+
+  .header-sticky-layout{
+    width: 100%;
+    &__body{
+      >li{
+        height: 75vh;
+        &:nth-child(3n - 2){
+          background: $gray-200;
+        }
+        &:nth-child(3n - 1){
+          background: $gray-300;
+        }
+        &:nth-child(3n){
+          background: $gray-400;
+        }
+      }
+    }
+  }
+</style>

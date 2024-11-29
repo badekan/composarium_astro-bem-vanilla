@@ -1,0 +1,105 @@
+---
+import type { HTMLAttributes } from 'astro/types';
+import Button, { ButtonVariant } from '../../atoms/button/button.astro';
+
+export interface HeaderHomeItem {
+  img?: {
+    src: string;
+    src2x: string;
+    alt: string;
+  };
+  svgString?: string;
+  label: string;
+  url?: string;
+}
+
+export interface HeaderItem {
+  label: string;
+  url: string;
+  isActive?: boolean;
+  isButton?: boolean;
+}
+
+export interface HeaderProps {
+  homeItem?: HeaderHomeItem;
+  leftItems?: Array<HeaderItem>;
+  rightItems?: Array<HeaderItem>;
+}
+
+const { homeItem, leftItems, rightItems } = Astro.props as HeaderProps;
+
+---
+<nav class="header">
+  <div class="header__inner">
+    {homeItem && (
+      <div class="header__logo">
+        {homeItem.svgString && (<Fragment set:html={homeItem.svgString} />)}
+      </div>
+    )}
+    <div class="header__menu">
+      {leftItems && (
+        <ul class="header__list">
+          {leftItems.map(item => (
+            <li class="header__list-el">
+              <a class:list={["header-link", item.isActive && "header-link--active"]} href={item.url}>{item.label}</a>
+            </li>
+          ))}
+        </ul>
+      )}
+      {rightItems && (
+        <ul class="header__list">
+          {rightItems.map(item => (
+            <li class="header__list-el">
+              {!item.isButton && (<a class:list={["header-link", item.isActive && "header-link--active"]} href={item.url}>{item.label}</a>)}
+              {item.isButton && (<Button class="header-button" tag="a" href={item.url} variant={ButtonVariant.Black}>{item.label}</Button>)}
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  </div>
+</nav>
+
+<style lang="scss" is:global>
+
+  @use "../../../scss/config" as *;
+
+  .header{
+    width: 100%;
+    padding: rem(20) $gutter;
+    border-bottom: 1px solid $gray-500;
+    background: $white;
+    &__inner{
+      width: 100%;
+      max-width: rem(1160);
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      gap: rem(20);
+    }
+    &__menu{
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    &__list{
+      display: flex;
+      align-items: center;
+      gap: rem(15);
+    }
+    // Elements
+    &__logo{
+    }
+  }
+
+  .header-link{
+    text-decoration: none;
+    text-underline-offset: rem(5);
+    font-weight: $fw-semibold;
+    color: $black;
+    &--active{
+      text-decoration: underline;
+    }
+  }
+</style>

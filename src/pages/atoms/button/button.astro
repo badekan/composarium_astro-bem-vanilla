@@ -5,7 +5,7 @@ import type { HTMLAttributes } from 'astro/types';
 
 export enum ButtonVariant {
   Primary = 'primary',
-  Secondary = 'secondary',
+  Black = 'black',
   Outline = 'outlined',
   Link = 'link',
 }
@@ -33,9 +33,9 @@ const classLoading = isLoading ? `button--loading` : "";
   @use "../../../scss/config" as *;
 
   // Box Model
-  $button--height: rem(60);
-  $button--py: rem(15);
-  $button--px: rem(25);
+  $button--height: rem(50);
+  $button--py: rem(12);
+  $button--px: rem(20);
   // Typography
   $button--fs: rem(14);
   $button--color: $white;
@@ -43,6 +43,7 @@ const classLoading = isLoading ? `button--loading` : "";
   $button--font-weight: $fw-bold;
   // Visual
   $button--background: $primary;
+  $button--background-hover: $primary-600;
   $button--border-width: rem(2);
   $button--border-radius: $radius-lg;
   // Animation
@@ -50,7 +51,7 @@ const classLoading = isLoading ? `button--loading` : "";
     all 0.2s ease-in-out,
     outline 0s linear;
 
-  @mixin button-hover-box-shadow-focus-outline($color: darken($button--background, 5%)) {
+  @mixin button-hover-box-shadow-focus-outline($color: $button--background-hover) {
     &:hover {
       box-shadow: 0 0 0 rem(1) $color;
 
@@ -116,12 +117,12 @@ const classLoading = isLoading ? `button--loading` : "";
     }
 
     // State
-    @include button-hover-box-shadow-focus-outline(darken($button--background, 5%));
+    @include button-hover-box-shadow-focus-outline($button--background-hover);
 
     &:hover {
       color: $button--color;
-      background: darken($button--background, 5%);
-      border-color: darken($button--background, 5%);
+      background: $button--background-hover;
+      border-color: $button--background-hover;
     }
 
     &[disabled] {
@@ -131,22 +132,22 @@ const classLoading = isLoading ? `button--loading` : "";
     }
 
     // Modifiers
-    &--secondary {
-      color: $button--color;
+    &--black {
+      color: $white; 
 
-      background: $secondary;
-      border-color: $secondary;
+      background: $black;
+      border-color: $black;
 
       // State
-      @include button-hover-box-shadow-focus-outline(darken($secondary, 5%));
+      @include button-hover-box-shadow-focus-outline($black);
 
       &:hover {
-        background: darken($secondary, 5%);
-        border-color: darken($secondary, 5%);
+        background: $black;
+        border-color: $black;
       }
 
       // Modifiers
-      @include button-loading-modifier-color($self, $button--color);
+      @include button-loading-modifier-color($self, $white);
     }
 
     &--outlined {
@@ -157,10 +158,10 @@ const classLoading = isLoading ? `button--loading` : "";
 
       // State
       &:hover {
-        color: darken($button--background, 5%);
+        color: $button--background-hover;
 
         background: transparent;
-        border-color: darken($button--background, 5%);
+        border-color: $button--background-hover;
       }
 
       // Modifiers
@@ -175,7 +176,7 @@ const classLoading = isLoading ? `button--loading` : "";
       border-color: transparent;
 
       // State
-      @include button-hover-box-shadow-focus-outline(darken($button--background, 5%));
+      @include button-hover-box-shadow-focus-outline($button--background-hover);
 
       &:hover,
       &:hover:active {
@@ -183,7 +184,7 @@ const classLoading = isLoading ? `button--loading` : "";
       }
 
       &:hover {
-        color: darken($button--background, 5%);
+        color: $button--background-hover;
 
         background: transparent;
         border-color: transparent;

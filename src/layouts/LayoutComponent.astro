@@ -1,9 +1,15 @@
 ---
 import { Icon } from 'astro-icon/components'
 import Layout from './Layout.astro'
+
+interface Props {
+  isFullScreen?: boolean;
+  hasBackLinkBelow?: boolean;
+}
+const { isFullScreen, hasBackLinkBelow } = Astro.props as Props;
 ---
 <Layout title="test">
-  <div class="component-block component-block--fullscreen">
+  <div class:list={["component-block", isFullScreen && 'component-block--fullscreen', hasBackLinkBelow && 'component-block--back-link-below']}>
     <a href="/" class="component-block__back"><Icon name="arrow-prev"/></a>
     <div class="component-block__container">
       <slot />
@@ -26,7 +32,7 @@ import Layout from './Layout.astro'
     position: relative;
     padding: $gutter;
     display: flex;
-    background: $gray-100;
+    background: $gray-200;
     &__container{
       background: var(--layout-component--background);
       display: flex;
@@ -39,7 +45,8 @@ import Layout from './Layout.astro'
       // border: 1px solid $gray-500;
     }
     &__back{
-      position: absolute;
+      position: fixed;
+      z-index: 999;
       left: $gutter;
       top: $gutter;
       width: rem(50);
@@ -49,7 +56,7 @@ import Layout from './Layout.astro'
       justify-content: center;
       border-radius: $radius-lg;
       border: 1px solid $gray-500;
-      box-shadow: 0 0 0 rem(20) $gray-100;
+      // box-shadow: 0 0 0 rem(20) $gray-100;
       text-decoration: none;
       background: $white;
     }
@@ -61,8 +68,14 @@ import Layout from './Layout.astro'
         align-items: flex-start;
       }
       #{$self}__back{
-        z-index: 9;
         box-shadow: none;
+      }
+    }
+
+    &--back-link-below{
+      #{$self}__back{
+        top: initial;
+        bottom: $gutter;
       }
     }
 

@@ -1,15 +1,13 @@
 ---
 import Layout from "../../../layouts/Layout.astro";
-import Components from "../../../layouts/Components.astro";
+import LayoutComponent from "../../../layouts/LayoutComponent.astro";
 
 import Noise from "./noise.astro";
 ---
 
-<Layout title="test">
-  <Components>
-      <div class="noise-component"><Noise /></div>
-  </Components>
-</Layout>
+<LayoutComponent>
+    <div class="noise-component"><Noise /></div>
+</LayoutComponent>
 
 <style lang="scss">
   @use "../../../scss/config" as *;

@@ -6,7 +6,8 @@ A modular collection of pre-built UI components designed with Astro, BEM, and va
 - [x] Lava lamp component
 - [x] Eye folow component
 - [x] Create a lightweight noise texture, maybe without javascript
-- [ ] Header sticky component
+- [x] Header sticky component
+- [x] Header component
 - [ ] Modal component
 - [ ] Accordion component
 - [ ] Install plop and create a plop commande to create a new component

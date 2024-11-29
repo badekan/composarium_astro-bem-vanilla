@@ -1,0 +1,197 @@
+---
+import type { HTMLAttributes } from 'astro/types';
+
+type Props = HTMLAttributes<"div">;
+const { ...props } = Astro.props as Props;
+---
+<div class:list={["sticky-header", props.class]} {...props}>
+  <div class="sticky-header__inner">
+    <slot></slot>
+  </div>
+</div>
+
+<style lang="scss">
+/* Variables */
+$sticky-header--transition-duration: .4s;
+$sticky-header--z-index: 9;
+$sticky-header--hidden-transform: translate3d(0,-100%,0);
+
+/* Component */
+.sticky-header{
+  $self: &;
+  display: block;
+
+  // Modifiers
+  &--fixed{
+    #{$self}__inner{
+      position: fixed;
+      z-index: $sticky-header--z-index;
+      left: 0; top: 0;
+      width: 100%;
+    }
+  }
+  &--transition{
+    #{$self}__inner{
+      transition: all $sticky-header--transition-duration ease;
+    }
+  }
+  &--hidden{
+    #{$self}__inner{
+      transform: $sticky-header--hidden-transform;
+    }
+  }
+}
+</style>
+
+<script>
+  import type { number } from "astro:schema";
+
+  enum HeaderStickyDirection {
+    UP = 'up',
+    DOWN = 'down'
+  }
+  
+  interface HeaderStickyOptions {
+    threshold: number,
+    gluedStart: boolean,
+    gluedActive: boolean,
+  }
+  
+  class HeaderSticky {
+    // Refs
+    private header: HTMLDivElement;
+
+    // Props  / Options
+    private threshold: number = 600;
+    private gluedStart: boolean = true;
+    private gluedActive: boolean = true; // ou bien glued-fixed ?
+
+    // States
+    private fixed: boolean = false;
+    private hidden: boolean = false;
+    private transition: boolean = false;
+    private active: boolean = false;
+
+    private height: string = 'auto';
+    private firstslidein: boolean = false;
+    private direction: HeaderStickyDirection | null = null;
+    private lastScrollTop: number = 0;
+
+    constructor(target: HTMLDivElement, options: HeaderStickyOptions = {threshold: 600, gluedStart: true, gluedActive: true}){
+      // Refs
+      this.header = target;
+
+      // Props / options
+      this.threshold = options.threshold; // 600
+      this.gluedStart = options.gluedStart; // tue
+      this.gluedActive = options.gluedActive; // true // ou bien glued-fixed ?
+
+      // States
+      this.fixed = false;
+      this.hidden = false;
+      this.transition = false;
+      this.active = false;
+
+      this.height = 'auto';
+      this.firstslidein = false;
+      this.direction = null;
+      this.lastScrollTop = 0;
+
+      // Componend did load
+      this.setHeight();
+      window.addEventListener("resize", () => this.updateHeight );
+      window.addEventListener('scroll', this.handleScroll.bind(this));
+    }
+    // Functions
+    toggleHeaderClass(className: string, state: boolean){
+      if(state){
+        this.header.classList.add(className);
+      }else{
+        this.header.classList.remove(className);
+      }
+    };
+
+    setHeaderClass(){
+      this.toggleHeaderClass('sticky-header--fixed', this.fixed);
+      this.toggleHeaderClass('sticky-header--transition', this.transition);
+      this.toggleHeaderClass('sticky-header--hidden', this.hidden);
+      this.toggleHeaderClass('sticky-header--active', this.active);
+    }
+
+    getHeight(){
+      return this.header.offsetHeight + 'px';
+    };
+
+    setHeight(){
+      this.header.style.height = this.getHeight();
+    };
+
+    updateHeight(){
+      if( this.height !== this.getHeight() ){
+        this.height = this.getHeight();
+      }
+    };
+
+    scrollDirection(){
+      // https://stackoverflow.com/questions/31223341/detecting-scroll-direction
+      // Credits: "https://github.com/qeremy/so/blob/master/so.dom.js#L426"
+      var st = window.pageYOffset || document.documentElement.scrollTop;
+      if (st > this.lastScrollTop){
+        this.direction = HeaderStickyDirection.DOWN;
+      } else {
+          this.direction = HeaderStickyDirection.UP;
+      }
+      this.lastScrollTop = st <= 0 ? 0 : st; // For Mobile or negative scrolling
+    };
+
+    handleScroll() {
+      this.scrollDirection();
+      let scroll = this.header.getBoundingClientRect().top * -1;
+
+      if(scroll >= this.threshold){
+        this.fixed = true;
+        this.active = true;
+          if(this.gluedActive != true){
+            if(this.direction === 'up'){
+                this.hidden = false;
+                this.transition = true;
+              }else{
+                this.hidden = true;
+            }
+          }else{
+            if(!this.firstslidein){
+              this.firstslidein = true;
+              this.hidden = true;
+              setTimeout(()=>{
+                this.hidden = false;
+                this.transition = true;
+              },100)
+            }else{
+              this.hidden = false;
+              this.transition = true;
+            }
+          }
+      }else{
+          this.active = false;
+          this.hidden = false;
+          this.firstslidein = false;
+          if(scroll <= 0){
+              this.fixed = false;
+              this.transition = false;
+          }else{
+            if(this.gluedStart){
+              this.fixed = true;
+              this.transition = true;
+            }
+          }
+      }
+
+      this.setHeaderClass();
+      
+    };
+    
+  }
+
+  const header: HTMLDivElement | null = document.querySelector('.sticky-header');
+  if(header) new HeaderSticky(header, {threshold: 600, gluedStart: true, gluedActive: false});
+</script>

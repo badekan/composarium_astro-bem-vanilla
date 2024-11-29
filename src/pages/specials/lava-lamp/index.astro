@@ -1,15 +1,15 @@
 ---
 import LayoutComponent from "../../../layouts/LayoutComponent.astro";
 import LavaLamp from "./lava-lamp.astro";
-import EyeFollow from "../../molecules/eye-follow/eye-follow.astro";
-import Noise from "../../molecules/noise/noise.astro";
+import EyeFollow from "..//eye-follow/eye-follow.astro";
+import Noise from "../noise/noise.astro";
 
 import Column from "./svg/column.svg?raw";
 import Plateau from "./svg/plateau.svg?raw";
 import Wave from "./svg/wave.svg?raw";
 ---
 
-<LayoutComponent title="test">
+<LayoutComponent isFullScreen>
   <div class="section-lava-lamp">
     <div class="section-lava-lamp__container">
       <div class="section-lava-lamp__column section-lava-lamp__column--left" ><Fragment set:html={Column} /></div>
