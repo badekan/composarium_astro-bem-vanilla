@@ -1,6 +1,5 @@
 ---
-import LayoutComponent from "../../../layouts/LayoutComponent.astro";
-import LavaLamp from "./lava-lamp.astro";
+import CsrLavaLamp from "./lava-lamp.astro";
 import EyeFollow from "../eye-follow/eye-follow.astro";
 import Noise from "../noise/noise.astro";
 
@@ -9,30 +8,28 @@ import Plateau from "./svg/plateau.svg?raw";
 import Wave from "./svg/wave.svg?raw";
 ---
 
-<LayoutComponent isFullScreen>
-  <div class="section-lava-lamp">
-    <div class="section-lava-lamp__container">
-      <div class="section-lava-lamp__column section-lava-lamp__column--left" ><Fragment set:html={Column} /></div>
-      <h1 class="section-lava-lamp__title">
-        <span class="sm">The</span>
-        <span class="md">Lava Lamp</span>
-        <span class="sm">of</span>
-        <span class="md">Digital Dreams</span>
-      </h1>
-      <div class="section-lava-lamp__plateau"><Fragment set:html={Plateau} /></div>
-      <div class="section-lava-lamp__eye">
-         <EyeFollow/>
-      </div>
-      <div class="section-lava-lamp__column section-lava-lamp__column--right"><Fragment set:html={Column} /></div>
+<div class="section-lava-lamp">
+  <div class="section-lava-lamp__container">
+    <div class="section-lava-lamp__column section-lava-lamp__column--left" ><Fragment set:html={Column} /></div>
+    <h1 class="section-lava-lamp__title">
+      <span class="sm">The</span>
+      <span class="md">Lava Lamp</span>
+      <span class="sm">of</span>
+      <span class="md">Digital Dreams</span>
+    </h1>
+    <div class="section-lava-lamp__plateau"><Fragment set:html={Plateau} /></div>
+    <div class="section-lava-lamp__eye">
+        <EyeFollow/>
     </div>
-    <button class="button">button</button>
-    <div class="section-lava-lamp__noise">
-        <Noise/>
-    </div>
-    <LavaLamp class="section-lava-lamp__background"/>
-    <div class="section-lava-lamp__wave"><Fragment set:html={Wave} /></div>
+    <div class="section-lava-lamp__column section-lava-lamp__column--right"><Fragment set:html={Column} /></div>
   </div>
-</LayoutComponent>
+  <button class="button">button</button>
+  <div class="section-lava-lamp__noise">
+      <Noise/>
+  </div>
+  <CsrLavaLamp class="section-lava-lamp__background"/>
+  <div class="section-lava-lamp__wave"><Fragment set:html={Wave} /></div>
+</div>
 
 <style lang="scss" is:global>
   @use "../../../scss/config" as *;

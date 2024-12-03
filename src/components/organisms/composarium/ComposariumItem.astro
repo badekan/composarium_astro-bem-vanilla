@@ -4,16 +4,19 @@ import { Image } from 'astro:assets';
 interface Props {
   nameTxt: string;
   pathUrl: string;
-  srcImg?: ImageMetadata;
-  srcImg2x?: ImageMetadata;
+  coverData: {
+    src: ImageMetadata;
+    src2x?: ImageMetadata;
+  };
 }
 
-const { nameTxt, pathUrl, srcImg, srcImg2x } = Astro.props;
+const { nameTxt, pathUrl, coverData } = Astro.props;
+const { src, src2x } = coverData;
 ---
 
 <a class="composarium-item" href={pathUrl}>
   <div class="composarium-item__img-wrap">
-    <!-- {srcImg && srcImg2x ? ( <Image src={srcImg} srcset={`${srcImg2x.src} 2x`} alt="." /> ) :( <Image src={srcImg} alt="." /> )} -->
+    {src && src2x ? ( <Image src={src} srcset={`${src2x.src} 2x`} alt="." /> ) :( <Image src={src} alt="." /> )}
   </div>
   <div class="composarium-item__text-wrap">
     <p class="composarium-item__name">{nameTxt}</p>
@@ -21,7 +24,7 @@ const { nameTxt, pathUrl, srcImg, srcImg2x } = Astro.props;
 </a>
 
 <style lang="scss">
-	@use "../../scss/config" as *;
+	@use "@scss/config" as *;
   
   $composarium--gutter: rem(8);
 

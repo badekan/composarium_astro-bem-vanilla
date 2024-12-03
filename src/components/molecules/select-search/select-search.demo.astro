@@ -1,16 +1,8 @@
 ---
-import Layout from "../../../layouts/Layout.astro";
-import LayoutComponent from "../../../layouts/LayoutComponent.astro";
-
-import SelectSearch from "./select-search.jsx";
-import selectSearchItems from "./data/data.jsx";
-import type { SelectSearchExtraItem } from "./select-search.jsx";
-import type { SelectSearchProps } from "./select-search.jsx";
-
-// const selectSearchItems: SelectSearchItem = {
-//   value: 'prout',
-//   label: 'A&M Lanklaar Vilvertstraat 8, 3650 Lanklaar',
-// };
+import CsrSelectSearch from "./select-search.tsx";
+import selectSearchItems from "./data/data.js";
+import type { SelectSearchExtraItem } from "./select-search.js";
+import type { SelectSearchProps } from "./select-search.js";
 
 const selectSearchExtraItem: SelectSearchExtraItem = {
   separator: 'or',
@@ -25,15 +17,13 @@ const selectSearchProps: SelectSearchProps = {
   // items: [selectSearchItems],
   items: selectSearchItems,
   extraItem: selectSearchExtraItem,
-  targetInput: "#pomme",
+  targetInput: "#targetId",
 }
 ---
-<LayoutComponent>
-    <div class="select-search-component">
-      <input class="select-search-component__input-eg" type="text" id="pomme">
-      <SelectSearch {...selectSearchProps} client:only />
-    </div>
-</LayoutComponent>
+<div class="select-search-component">
+  <input class="select-search-component__input-eg" type="text" id="targetId">
+  <CsrSelectSearch {...selectSearchProps} client:only="react" />
+</div>
 <script>
   window.addEventListener('selectSearchExtraItem', (event) => {
     console.log('Received custom event:', event.detail.value);
@@ -41,7 +31,7 @@ const selectSearchProps: SelectSearchProps = {
   });
 </script>
 <style lang="scss">
-  @use "../../../scss/config" as *;
+  @use "@scss/config" as *;
   
   .select-search-component{
     width: rem(520);

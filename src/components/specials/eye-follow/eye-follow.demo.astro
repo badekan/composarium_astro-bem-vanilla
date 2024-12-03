@@ -1,0 +1,17 @@
+---
+import CsrEyeFollow from "./eye-follow.astro";
+---
+<div class="eye-follow-container">
+  <CsrEyeFollow/>
+</div>
+
+<style lang="scss">
+  @use "../../../scss/config" as *;
+  .eye-follow-container{
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+</style>

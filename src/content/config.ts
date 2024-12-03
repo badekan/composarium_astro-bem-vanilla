@@ -7,9 +7,11 @@ import { z, defineCollection, reference } from 'astro:content';
 // 2. Define your collection(s)
 const componentsCollection = defineCollection({
   type: 'content', // v2.5.0 and later
-  schema: z.object({
+  schema: ({ image }) => z.object({
+    cover: image().optional(),
+    cover2x: image().optional(),
     title: z.string(),
-    description: z.string(),
+    description: z.string().optional(),
     category: reference('category'),
     subcategory: reference('subcategory').optional(),
   }),
@@ -19,7 +21,7 @@ const categoriesCollection = defineCollection({
   type: 'data',
   schema: z.object({
     title: z.string(),
-    description: z.string(),
+    description: z.string().optional(),
     isSpecial: z.boolean().optional(),
   }),
 });
@@ -27,7 +29,7 @@ const categoriesCollection = defineCollection({
 const subcategoriesCollection = defineCollection({
   type: 'data',
   schema: z.object({
-    title: z.string(),
+    title: z.string().optional(),
     category: reference('category'),
   }),
 });

@@ -1,8 +1,5 @@
 ---
-import Layout from "../../../layouts/Layout.astro";
-import LayoutComponent from "../../../layouts/LayoutComponent.astro";
-
-import GlossyBorder from "./glossy-border.astro";
+import CsrGlossyBorder from "./glossy-border.astro";
 
 const items = [];
 for (let i = 0; i < 9; i++) {
@@ -10,15 +7,13 @@ for (let i = 0; i < 9; i++) {
 }
 ---
 
-<LayoutComponent>
   <div class="glossy-border-block">
     {items.map((item) => (
-      <GlossyBorder>
+      <CsrGlossyBorder>
         {item}
-      </GlossyBorder>
+      </CsrGlossyBorder>
     ))}
   </div>
-</LayoutComponent>
 
 <style lang="scss">
   @use "../../../scss/config" as *;

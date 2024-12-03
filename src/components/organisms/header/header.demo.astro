@@ -1,0 +1,19 @@
+---
+import CsrHeader from "./header.astro";
+import headerProps from "./data/header.tsx";
+
+
+---
+<div class="layout-header">
+  <CsrHeader {...headerProps} />
+</div>
+
+<style lang="scss">
+  @use "@scss/config" as *;
+  
+  .layout-header{
+    height: 100%;
+    width: 100%;
+    background: $gray-200;
+  }
+</style>

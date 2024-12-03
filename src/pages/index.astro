@@ -1,17 +1,44 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import ComposariumItem from '../components/molecules/ComposariumItem.astro';
+import { getCollection, type CollectionEntry } from 'astro:content';
+import ComposariumList from '@components/organisms/composarium/ComposariumList.astro';
 
-import { getCollection } from 'astro:content';
+// Types
+export interface ComponentsItem {
+	path: string,
+	cover: ImageMetadata,
+	cover2x: ImageMetadata,
+	title: string,
+	description: string,
+	category: string,
+	subcategory: string,
+}
 
-// Get all `src/content/blog/` entries
+export interface SubcategoryItem {
+	title: string,
+	description: string,
+	category: string,
+	componentsItems: ComponentsItem[],
+}
+
+export interface CategoryItem {
+	title: string,
+	description: string,
+	isSpecial: boolean,
+	componentsItems: ComponentsItem[] | false,
+	subcategoryItems: SubcategoryItem[] | false,
+}
+
+// Get all entries
 const allComponents = await getCollection('components');
 const allCategory = await getCollection('category');
 const allSubcategory = await getCollection('subcategory');
 
-const componentsItems = allComponents.map((item) => {
+const componentsItems: ComponentsItem[] = allComponents.map((item: CollectionEntry<"components">): ComponentsItem => {
 	return {
 		path: 'components/'+item.slug,
+		cover: item.data.cover,
+		cover2x: item.data.cover2x,
 		title: item.data.title,
 		description: item.data.description,
 		category: item.data.category.slug,
@@ -19,20 +46,22 @@ const componentsItems = allComponents.map((item) => {
 	}
 });
 
-const subcategoryItems = allSubcategory.map((subcategoryItem) => {
+const subcategoryItems: SubcategoryItem[] = allSubcategory.map((subcategoryItem: CollectionEntry<"subcategory">) => {
 	return {
 		title: subcategoryItem.data.title,
+		description: subcategoryItem.data.description,
 		category: subcategoryItem.data.category.slug,
 		componentsItems: componentsItems.filter((componentItem) => componentItem.subcategory === subcategoryItem.slug),
 	}
 });
 
-const categoryItems = allCategory.map((categoryItem) => {
+const categoryItems: CategoryItem[] = allCategory.map((categoryItem: CollectionEntry<"category">): CategoryItem => {
 	
 	const subcategoryItemsData = subcategoryItems.filter((subcategoryItem) => subcategoryItem.category === categoryItem.slug);
 
 	return {
 		title: categoryItem.data.title,
+		description: categoryItem.data.description,
 		isSpecial: categoryItem.data.isSpecial,
 		componentsItems: componentsItems.filter((componentItem) => componentItem.category === categoryItem.slug && !componentItem.subcategory ),
 		subcategoryItems: subcategoryItemsData.length > 0 && subcategoryItemsData,
@@ -65,58 +94,12 @@ const categoryItems = allCategory.map((categoryItem) => {
 			</div>
 		</div>
 
-		<ul class="composarium-list-category">
-			{/* categoryItems */}
-			{categoryItems.map((categoryItem) => (
-				<li class:list={["composarium-list-category__el", categoryItem.isSpecial && "composarium-list-category__el--special"]}>
-					<h2 class="composarium-list-category__title">
-						{categoryItem.title}
-					</h2>
-					<div class="composarium-list-category__items">
-						{/* componentsItems */}
-						{categoryItem.componentsItems && (
-							<ul class="composarium-list-component">
-								{categoryItem.componentsItems.map((componentsItem) => (
-									<li class="composarium-list-component__el">
-										<ComposariumItem 
-											nameTxt={componentsItem.title}
-											pathUrl={componentsItem.path}
-											/>
-									</li>
-								))}
-							</ul>
-						)}
-						{/* subcategoryItems */}
-						{categoryItem.subcategoryItems && (
-							<ul class="composarium-list-subcategory">
-								{categoryItem.subcategoryItems.map((subcategoryItem) => (
-									<li class="composarium-list-subcategory__el">
-										<h3 class="composarium-list-subcategory__title">{subcategoryItem.title}</h3>
-										<div class="composarium-list-subcategory__items">
-											<ul class="composarium-list-subcomponents">
-												{subcategoryItem.componentsItems.map((componentsItem) => (
-													<li class="composarium-list-subcomponents__el">
-														<ComposariumItem 
-															nameTxt={componentsItem.title}
-															pathUrl={componentsItem.path} />
-													</li>
-												))}
-											</ul>
-										</div>
-									</li>
-								))}
-							</ul>
-						)}
-					</div>
-				</li>
-			))}
-			
-		</ul>
+		<ComposariumList data={categoryItems}>
 	</main>
 </Layout>
 
 <style lang="scss">
-	@use "../scss/config" as *;
+	@use "@scss/config" as *;
 
 	.container{
 		// container
@@ -134,6 +117,13 @@ const categoryItems = allCategory.map((categoryItem) => {
 			font-size: $fs-4xl;
 			font-weight: $fw-bold;
 			margin-bottom: rem(10);
+			// line-height: .7;
+			@include mq('max','lg'){
+				font-size: $fs-3xl;
+			}
+			@include mq('max','md'){
+				font-size: $fs-2xl;
+			}
 		}
 		&__tags{
 			display: flex;
@@ -147,94 +137,6 @@ const categoryItems = allCategory.map((categoryItem) => {
 			border-radius: $radius-base;
 		}
 		&__description{
-		}
-	}
-	
-	// Composarium Lists
-	$composarium-list--category-gutter: rem(40); 
-	$composarium-list--category-border-color: $gray-400; 
-	$composarium-list--subcategory-border-color: $gray-300; 
-	$composarium-list--component-gutter: rem(20); 
-	
-	.composarium-list-category{
-		margin-bottom: rem(100);
-		&__el--special{
-			position: relative;
-			&:before{
-				@include pseudo();
-				left: rem(-40); top: rem(-1);
-				width: calc(100% + #{rem(80)});
-				height: 100%;
-				background: $gray-200;
-				border-radius: $radius-3xl;
-				border: rem(1) solid $composarium-list--category-border-color;
-			}
-		}
-	}
-
-	.composarium-list-category, .composarium-list-subcategory{
-		width: 100%;
-		&__el{
-			position: relative;
-		}
-
-		&__title{
-			position: absolute;
-			left: 0;
-			top: $composarium-list--category-gutter;
-			width: 28%;
-			flex-shrink: 0;
-			align-self: flex-start;
-			font-weight: $fw-bold;
-		}
-		&__items{
-			width: 100%;
-			display: flex;
-			align-items: flex-end;
-			flex-direction: column;
-		}
-
-	}	
-
-
-	.composarium-list-category{
-		&__el{
-			padding: $composarium-list--category-gutter 0;
-			border-top: 1px solid $composarium-list--category-border-color;
-		}
-	}
-
-	.composarium-list-subcategory{
-		&__el{
-			padding: $composarium-list--category-gutter 0;
-			border-top: 1px solid $composarium-list--subcategory-border-color;
-			&:last-child{
-				padding-bottom: 0;
-			}
-		}
-	}
-
-	.composarium-list-category{
-		&__title{
-			font-size: $fs-xl;
-			font-weight: $fw-bold;
-		}
-	}
-
-	.composarium-list-subcategory{
-		margin-top: $composarium-list--category-gutter; 
-		&__title{
-			font-size: $fs-lg;
-			font-weight: $fw-regular;
-		}
-	}
-
-	.composarium-list-component, .composarium-list-subcomponents{
-		display: grid;
-		width: 70%;
-		gap: $composarium-list--component-gutter;
-		grid-template-columns: repeat(3, minmax(0, 1fr));
-		&__el{
 		}
 	}
 </style>

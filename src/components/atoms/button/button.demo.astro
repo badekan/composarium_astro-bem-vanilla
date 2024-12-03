@@ -1,0 +1,17 @@
+---
+import CsrButton, { ButtonVariant } from "@components/atoms/button/button.astro";
+---
+<div class="buttons">
+  <CsrButton variant={ButtonVariant.Link}>
+    Link
+  </CsrButton>
+  <CsrButton>
+    Default
+  </CsrButton>
+  <CsrButton variant={ButtonVariant.Outline}>
+    Outline
+  </CsrButton>
+  <CsrButton disabled>
+    Disabled
+  </CsrButton>
+</div>

@@ -1,25 +1,21 @@
 ---
-import LayoutComponent from "../../../layouts/LayoutComponent.astro";
 import headerProps from "../../organisms/header/data/header";
 import Header from "../../organisms/header/header.astro";
-import HeaderSticky from "./header-sticky.astro";
+import CsrHeaderSticky from "./header-sticky.astro";
 ---
-
-<LayoutComponent isFullScreen hasBackLinkBelow>
-  <div class="header-sticky-layout">
-    <HeaderSticky>
-      <Header {...headerProps} />
-    </HeaderSticky>
-    <ul class="header-sticky-layout__body">
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-    </ul>
-  </div>
-</LayoutComponent>
+<div class="header-sticky-layout">
+  <CsrHeaderSticky>
+    <Header {...headerProps} />
+  </CsrHeaderSticky>
+  <ul class="header-sticky-layout__body">
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+  </ul>
+</div>
 
 <style lang="scss" is:global>
   @use "../../../scss/config" as *;

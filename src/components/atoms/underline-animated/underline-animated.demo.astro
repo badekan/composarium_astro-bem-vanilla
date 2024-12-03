@@ -1,0 +1,55 @@
+---
+import CsrUnderlineAnimated, { UnderlineAnimatedVariant } from "./underline-animated.astro";
+
+const items = ['Home', 'Solutions', 'Services', 'Company', 'Client', 'Contact'];
+---
+<div class="underline-animated-block">
+  <h1 class="underline-animated-block__title">Underline Animated</h1>
+  <div class="underline-animated-block__section">
+    <h2 class="underline-animated-block__sm-title">In Out</h2>
+    <div class="underline-animated-block__grid">
+      {items.map((item) => (
+        <CsrUnderlineAnimated>
+          {item}
+        </CsrUnderlineAnimated>
+      ))}
+    </div>
+  </div>
+  <div class="underline-animated-block__section">
+    <h2 class="underline-animated-block__sm-title">In Back</h2>
+    <div class="underline-animated-block__grid">
+      {items.map((item) => (
+        <CsrUnderlineAnimated variant={UnderlineAnimatedVariant.InBack}>
+          {item}
+        </CsrUnderlineAnimated>
+      ))}
+    </div>
+  </div>
+  
+</div>
+
+<style lang="scss">
+
+  @use "@scss/config" as *;
+
+  .underline-animated-block{
+    &__title{
+      font-weight: $fw-bold;
+      font-size: $fs-lg;
+      margin-bottom: rem(20);
+    }
+    &__sm-title{
+      font-weight: $fw-bold;
+      font-size: $fs-base;
+    }
+    &__section{
+      &:not(:last-child){
+        margin-bottom: rem(20);
+      }
+    }
+    &__grid{
+      display: flex;
+      gap: rem(10);
+    }
+  }
+</style>

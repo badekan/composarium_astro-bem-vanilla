@@ -1,0 +1,172 @@
+---
+import ComposariumItem from '@components/organisms/composarium/ComposariumItem.astro';
+import type { CategoryItem } from 'src/pages/index.astro'
+
+interface Props {
+  data: CategoryItem[],
+}
+
+const { data: categoryItems } = Astro.props;
+const categoryItemsFormatted = categoryItems.filter((categoryItem)=> categoryItem.componentsItems && categoryItem.componentsItems.length >= 1)
+---
+<ul class="composarium-list composarium-list--category">
+  {/* categoryItems */}
+  {categoryItemsFormatted.map((categoryItem) => (
+    <li class:list={["composarium-list__el", categoryItem.isSpecial && "composarium-list__el--special"]}>
+      <div class="composarium-list__aside-infos">
+        <h2 class="composarium-list__title">{categoryItem.title}</h2>
+        {categoryItem.description &&(<div class="composarium-list__description">{categoryItem.description}</div>)}
+      </div>
+      <div class="composarium-list__items">
+        {/* componentsItems */}
+        {categoryItem.componentsItems && (
+          <ul class="composarium-list-components">
+            {categoryItem.componentsItems.map((componentsItem) => (
+              <li class="composarium-list-components__el">
+                <ComposariumItem 
+                  nameTxt={componentsItem.title}
+                  pathUrl={componentsItem.path}
+                  coverData={{
+                    src: componentsItem.cover,
+                    src2x: componentsItem.cover2x,
+                  }}/>
+              </li>
+            ))}
+          </ul>
+        )}
+        {/* subcategoryItems */}
+        {categoryItem.subcategoryItems && (
+          <ul class="composarium-list composarium-list--subcategory">
+            {categoryItem.subcategoryItems.map((subcategoryItem) => (
+              <li class="composarium-list__el">
+                <div class="composarium-list__aside-infos">
+                  <h3 class="composarium-list__title">{subcategoryItem.title}</h3>
+                  {subcategoryItem.description &&(<div class="composarium-list__description">{subcategoryItem.description}</div>)}
+                </div>
+                <div class="composarium-list__items">
+                  <ul class="composarium-list-components">
+                    {subcategoryItem.componentsItems.map((componentsItem) => (
+                      <li class="composarium-list-components__el">
+                        <ComposariumItem 
+                          nameTxt={componentsItem.title}
+                          pathUrl={componentsItem.path}
+                          coverData={{
+                            src: componentsItem.cover,
+                            src2x: componentsItem.cover2x,
+                          }}/>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
+    </li>
+  ))}
+  
+</ul>
+
+
+<style lang="scss">
+	@use "@scss/config" as *;
+	
+	$composarium-list--category-gutter: rem(40); 
+	$composarium-list--category-border-color: $gray-400; 
+	$composarium-list--subcategory-border-color: $gray-300; 
+	$composarium-list--component-gutter: rem(20); 
+
+	.composarium-list{
+    $self: '.composarium-list';
+		width: 100%;
+		&__el{
+			position: relative;
+      padding: $composarium-list--category-gutter 0;
+      border-top: 1px solid $composarium-list--category-border-color;
+      &--special{
+        position: relative;
+        &:before{
+          @include pseudo();
+          left: rem(-40); top: rem(-1);
+          width: calc(100% + #{rem(80)});
+          height: 100%;
+          background: $gray-200;
+          border-radius: $radius-3xl;
+          border: rem(1) solid $composarium-list--category-border-color;
+          @include mq('max','xl'){
+            left: rem(-20); top: rem(-1);
+            width: calc(100% + #{rem(40)});
+          }
+        }
+      }
+		}
+
+		&__aside-infos{
+			position: absolute;
+			left: 0;
+			top: $composarium-list--category-gutter;
+			width: 28%;
+			flex-shrink: 0;
+			align-self: flex-start;
+      margin-bottom: rem(20);
+      @include mq('max','lg'){
+        position: relative;
+        top: initial;
+        z-index: 2;
+        width: 100%;
+      }
+		}
+		&__items{
+			width: 100%;
+			display: flex;
+			align-items: flex-end;
+			flex-direction: column;
+		}
+    
+    // Elements
+    #{$self}__title{
+      font-size: $fs-xl;
+      font-weight: $fw-bold;
+    }
+
+    // Modifiers
+    &--category{
+      margin-bottom: rem(100);
+    }
+
+    &--subcategory{
+      margin-top: $composarium-list--category-gutter; 
+
+      #{$self}__el{
+        padding: $composarium-list--category-gutter 0;
+        border-top: 1px solid $composarium-list--subcategory-border-color;
+        &:last-child{
+          padding-bottom: 0;
+        }
+      }
+      #{$self}__title{
+        font-size: $fs-lg;
+        font-weight: $fw-regular;
+      }
+    }
+	}	
+
+	.composarium-list-components{
+		display: grid;
+		gap: $composarium-list--component-gutter;
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+    width: 70%;
+    @include mq('max','lg'){
+      width: 100%;
+    }
+    @include mq('max','md'){
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    @include mq('max','sm'){
+      grid-template-columns: repeat(1, minmax(0, 1fr));
+    }
+		&__el{
+		}
+	}
+</style>

@@ -1,0 +1,13 @@
+---
+import CsrNoise from "./noise.astro";
+---
+
+<div class="noise-component"><CsrNoise /></div>
+
+<style lang="scss">
+  @use "../../../scss/config" as *;
+  
+  .noise-component{
+    @include cover()
+  }
+</style>
