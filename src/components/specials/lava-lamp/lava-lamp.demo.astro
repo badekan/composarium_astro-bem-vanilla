@@ -1,145 +1,18 @@
 ---
-import CsrLavaLamp from "./lava-lamp.astro";
-import EyeFollow from "../eye-follow/eye-follow.astro";
-import Noise from "../noise/noise.astro";
-
-import Column from "./svg/column.svg?raw";
-import Plateau from "./svg/plateau.svg?raw";
-import Wave from "./svg/wave.svg?raw";
+import CsrLavaLamp, { LavaLampColor } from "./lava-lamp.astro";
 ---
 
-<div class="section-lava-lamp">
-  <div class="section-lava-lamp__container">
-    <div class="section-lava-lamp__column section-lava-lamp__column--left" ><Fragment set:html={Column} /></div>
-    <h1 class="section-lava-lamp__title">
-      <span class="sm">The</span>
-      <span class="md">Lava Lamp</span>
-      <span class="sm">of</span>
-      <span class="md">Digital Dreams</span>
-    </h1>
-    <div class="section-lava-lamp__plateau"><Fragment set:html={Plateau} /></div>
-    <div class="section-lava-lamp__eye">
-        <EyeFollow/>
-    </div>
-    <div class="section-lava-lamp__column section-lava-lamp__column--right"><Fragment set:html={Column} /></div>
-  </div>
-  <button class="button">button</button>
-  <div class="section-lava-lamp__noise">
-      <Noise/>
-  </div>
-  <CsrLavaLamp class="section-lava-lamp__background"/>
-  <div class="section-lava-lamp__wave"><Fragment set:html={Wave} /></div>
-</div>
+<CsrLavaLamp class="section-lava-lamp-layout" color={LavaLampColor.VariantA}/>
 
 <style lang="scss" is:global>
   @use "../../../scss/config" as *;
-  @import url('https://fonts.googleapis.com/css2?family=Grenze:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Sora:wght@100..800&display=swap');
 
-  .section-lava-lamp{
-    position: relative;
+  .section-lava-lamp-layout{
+    position: absolute !important;
+    top: 0;
+    left: 0;
     width: 100%;
-  
-    font-family: "Grenze", serif;
-    padding: 0 $gutter;
-
-    // Layout
-    &__container{
-      position: relative;
-      width: 100%;
-      max-width: rem(1296);
-      margin: 0 auto;
-      z-index: 9;
-      flex-direction: column;
-      align-items: center;
-      aspect-ratio: 1296 / 816;
-    }
-    &__plateau{
-      width: rem(840);
-      max-width: 64%;
-      margin: 0 auto;
-    }
-    &__column{
-      position: absolute;
-      top: 0;
-      margin-top: rem(100);
-      max-width: 45%;
-      
-      &--left{
-        left: 0;
-      }
-      &--right{
-        right: 0;
-        transform: scaleX(-1);
-      }
-    }
-    &__background{
-      position: absolute !important;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: 1;
-    }
-    
-    &__noise{
-      @include cover();
-      overflow: hidden;
-      z-index: 2;
-    }
-
-    &__wave{
-      position: absolute;
-      left: 0;
-      bottom: 0;
-      width: 100%;
-      z-index: 3;
-    }
-
-    // Elements
-    &__title{
-      padding-top: rem(88);
-      padding-bottom: rem(30);
-      color: $white;
-      line-height: .82;
-      text-transform: uppercase;
-      font-weight: $fw-regular;
-      text-align: center;
-      font-size: rem(100);
-      
-      @media screen and (max-width: '1350px'){ // Breakpoint of column becoming smaller
-        font-size: 7vw;
-        padding-bottom: 3vw;
-      }
-      
-      span{
-        display: block;
-      }
-
-      .sm{
-        font-weight: 100;
-        font-size: rem(40);
-
-        @media screen and (max-width: '1350px'){ // Breakpoint of column becoming smaller
-          font-size: 3.5vw;
-        }
-      }
-    }
-
-    &__eye{
-      --eye-follow--color: #{$white};
-      display: flex;
-      justify-content: center;
-      margin-top: rem(-300);
-      @media screen and (max-width: '1350px'){ // Breakpoint of column becoming smaller
-        margin-top: -22vw;
-      }
-
-    }
-
-    svg{
-      height: auto;
-      max-width: 100%;
-    }
-    
+    height: 100%;
+    z-index: 1;
   }
 </style>

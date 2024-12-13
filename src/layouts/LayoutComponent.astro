@@ -42,6 +42,8 @@ const { isFullScreen, hasBackLinkBelow } = Astro.props as Props;
       max-width: rem(1296);
       margin: 0 auto;
       border-radius: $radius-lg;
+      position: relative;
+      overflow: clip;
       // border: 1px solid $gray-500;
     }
     &__back{
@@ -66,6 +68,7 @@ const { isFullScreen, hasBackLinkBelow } = Astro.props as Props;
       #{$self}__container{
         max-width: 100%;
         align-items: flex-start;
+        border-radius: 0px;
       }
       #{$self}__back{
         box-shadow: none;

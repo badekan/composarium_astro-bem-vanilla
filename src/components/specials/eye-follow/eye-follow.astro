@@ -72,7 +72,8 @@ import Eye from "./svg/eye.svg?raw";
 </style>
 
 <script>
-  // import anime from 'animejs/lib/anime.es.js';
+  import anime from 'animejs/lib/anime.es.js';
+  
   class EyeFollow {
     eye: HTMLElement;
     pupil: HTMLElement | null;
@@ -114,14 +115,14 @@ import Eye from "./svg/eye.svg?raw";
         this.pupil.style.top = newTop + 'px';
       }
 
-      // // Anime if there is a debounce
-      // anime({
-      //   targets: this.pupil,
-      //   left: newLeft, // pupil.style.left = newLeft + 'px';
-      //   top: newTop, // pupil.style.top = newTop + 'px';
-      //   duration: 200,
-      //   easing: 'easeOutCirc'
-      // });
+      // Anime if there is a debounce
+      anime({
+        targets: this.pupil,
+        left: newLeft, // pupil.style.left = newLeft + 'px';
+        top: newTop, // pupil.style.top = newTop + 'px';
+        duration: 200,
+        easing: 'easeOutCirc'
+      });
     }
   }
 
