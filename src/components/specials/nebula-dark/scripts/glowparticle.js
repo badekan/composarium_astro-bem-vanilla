@@ -1,13 +1,13 @@
 const PI2 = Math.PI * 2;
 
 export class GlowParticle {
-    constructor(x, y, radius, colors, isStatic = false) {
+    constructor({ x, y, radius, colors, isStatic = false }) {
         this.x = x;
         this.y = y;
         this.baseRadius = 150;
         this.colors = colors;
         this.isStatic = isStatic;
-        this.currentColorIndex = 0;
+        this.currentColorIndex = Math.floor(Math.random() * colors.length);
         this.nextColorIndex = Math.floor(Math.random() * colors.length);
 
         this.colorTransitionSpeed = 0.01; // Vitesse de transition des couleurs
@@ -64,6 +64,7 @@ export class GlowParticle {
             this.x,
             this.y,
             this.radius * 0.001,
+            // this.radius * .99,
             this.x,
             this.y,
             this.radius

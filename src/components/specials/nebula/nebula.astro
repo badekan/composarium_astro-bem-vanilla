@@ -1,0 +1,213 @@
+---
+import type { HTMLAttributes } from 'astro/types';
+import imgNoise from './svg/noise.svg';
+
+export enum LavaLampColor {
+  VariantA = 'variantA',
+  VariantB = 'variantB',  
+}
+
+interface CommonProps {
+  color?: LavaLampColor;
+}
+
+type Props = HTMLAttributes<"div"> & CommonProps;
+
+const { color, ...props } = Astro.props as Props;
+---
+<div {...props} id="nebula"
+  style={{ 
+          backgroundImage: `url(${imgNoise.src})`,
+          backgroundSize: '300px',
+          backgroundRepeat: 'repeat',
+          filter: 'contrast(400%)' 
+        }}>
+
+</div>
+
+
+<style lang="scss">
+  @use "../../../scss/config" as *;
+
+  #nebula {
+    position: relative;
+
+    // For Black mode
+    // filter: contrast(400%);
+    // mix-blend-mode: hard-light;
+
+    &:after{
+      @include pseudo();
+      @include cover();
+      background: radial-gradient(circle at center, rgba($white,0) 30%, rgba($white,1) 100%);
+      z-index: 10;
+    }
+
+  }
+
+  canvas{
+    height: 100%;
+    width: 100%;
+    opacity: 0;
+    transition: all 2s ease;
+    &.active{
+      opacity: 1;
+    }
+  }
+</style>
+<script>
+  import {GlowParticle} from './scripts/glowparticle';
+
+  interface Colors {
+    dark: Array<Color>;
+    light: Array<Color>
+  }
+
+  interface Color {
+    r: number;
+    g: number;
+    b: number;
+  }
+  
+  class Nebula {
+
+    private nebula: HTMLElement | null;
+    private colors: Colors;
+    private canvas: HTMLCanvasElement;
+    private ctx: CanvasRenderingContext2D | null;
+    private pixelRatio: number;
+    private totalParticles: number;
+    private particles: GlowParticle[];
+    private maxRadius: number;
+    private minRadius: number;
+    private stageWidth: number;
+    private stageHeight: number;  
+
+    constructor(target: string, colors: Colors){
+
+      this.colors = colors;
+      this.nebula = document.querySelector(target);
+      this.canvas = document.createElement('canvas');
+      this.ctx = this.canvas.getContext('2d');
+      this.pixelRatio = (window.devicePixelRatio > 1) ? 2 : 1;
+      this.totalParticles = 8;
+      this.particles = [];
+      this.maxRadius = 900;
+      this.minRadius = 400;
+      this.stageWidth = this.nebula ? this.nebula.clientWidth : document.body.clientWidth;
+      this.stageHeight = this.nebula ? this.nebula.clientHeight : document.body.clientHeight;
+
+      if(this.nebula) this.nebula.appendChild(this.canvas);
+
+      window.addEventListener('resize', this.resize.bind(this), false);
+      this.resize();
+      
+      this.canvas.classList.add('active');
+      window.requestAnimationFrame(this.animate.bind(this));
+    }
+
+    resize(){
+      this.stageWidth = this.nebula ? this.nebula.clientWidth : document.body.clientWidth;
+      this.stageHeight = this.nebula ? this.nebula.clientHeight : document.body.clientHeight;
+
+      this.canvas.width = this.stageWidth * this.pixelRatio;
+      this.canvas.height = this.stageHeight * this.pixelRatio;
+
+      if(this.ctx) this.ctx.scale(this.pixelRatio, this.pixelRatio);
+
+      // if(this.ctx) this.ctx.globalCompositeOperation = "destination-over";
+      if(this.ctx) this.ctx.globalCompositeOperation = "xor";
+      // if(this.ctx) this.ctx.globalCompositeOperation = 'hard-light';
+      // if(this.ctx) this.ctx.globalCompositeOperation = "darken";
+      
+      // // "destination-over"
+      // // "xor"
+      // // "exclusion"
+      // // "hue"
+      // "saturation"
+      // "color"
+      // "luminosity"
+
+      this.createParticles();
+    }
+
+    createParticles(){
+      let chosenColors = this.colors.light;
+      let curColor = 0;
+      this.particles = []; 
+      
+      let particleConfig = {
+        x: Math.random() * this.stageWidth, 
+        y: Math.random() * this.stageHeight,
+        radius: Math.random() *  (this.maxRadius - this.minRadius) + this.minRadius,
+        colors: chosenColors,
+        isStatic: false,
+      }
+
+      for(let i = 0; i < this.totalParticles; i++) {
+        let item: GlowParticle;
+
+        if(i >= (this.totalParticles / 2) - 1 ){ 
+          chosenColors = this.colors.dark; 
+          particleConfig.colors = chosenColors;
+        }
+
+        // The laste particle is the center of the circle
+        if(i === this.totalParticles - 1){
+          particleConfig.x = this.stageWidth / 2;
+          particleConfig.y = this.stageHeight / 2;
+          particleConfig.isStatic = true;
+
+          item = new GlowParticle(particleConfig);
+        }else{
+          item = new GlowParticle(particleConfig);
+        }
+        
+        if(++curColor >= chosenColors.length) {
+          curColor = 0;
+        }
+
+        this.particles[i] = item;
+      }
+    }
+
+    animate(){
+      window.requestAnimationFrame(this.animate.bind(this));
+      if(this.ctx) this.ctx.clearRect(0,0, this.stageWidth, this.stageHeight);
+
+      for( let i = 0; i < this.totalParticles; i++){
+        const item = this.particles[i];
+        item.animate(this.ctx, this.stageWidth, this.stageHeight);
+      }
+    }
+    
+  }
+    
+  // const colors: Colors = {
+  //   dark:[
+  //     { r: 0, g: 83, b: 128 }, // Bleu claire
+  //     { r: 0, g: 67, b: 102 }, // Bleu foncé
+
+  //   ],
+  //   light:[
+  //     { r: 253, g: 2, b: 206 }, // Hot Magenta
+  //     { r: 251, g: 18, b: 46 }, // Imperial Red
+  //   ]
+  // };
+  
+  const colors: Colors = {
+    dark:[
+      { r: 253, g: 2, b: 206 }, // Hot Magenta
+      { r: 251, g: 18, b: 46 }, // Imperial Red
+      
+    ],
+    light:[
+      { r: 100, g: 160, b: 80 }, // Vert
+      { r: 0, g: 119, b: 182 }, // Bleu
+    ]
+  };
+
+  window.onload = () =>{
+    new Nebula('#nebula', colors);
+  }
+</script>

@@ -1,24 +1,26 @@
 const PI2 = Math.PI * 2;
 
 export class GlowParticle {
-    constructor(x, y, radius, colors, isStatic = false) {
+    constructor({ x, y, radius, colors, isStatic = false }) {
         this.x = x;
         this.y = y;
-        this.baseRadius = radius;
+        this.baseRadius = 150;
         this.colors = colors;
-        this.currentColorIndex = 0;
+        this.isStatic = isStatic;
+        this.currentColorIndex = Math.floor(Math.random() * colors.length);
         this.nextColorIndex = Math.floor(Math.random() * colors.length);
 
-        this.colorTransitionSpeed = 0.001; // Vitesse de transition des couleurs
+        this.colorTransitionSpeed = 0.01; // Vitesse de transition des couleurs
         this.colorTransitionProgress = 0;
 
         this.angle = Math.random() * PI2; // Angle initial aléatoire
-        this.orbitRadius = this.baseRadius / 1.5; // Rayon de l'orbite
+        // this.orbitRadius = Math.random() * (this.baseRadius / 2); // Rayon de l'orbite
+        this.orbitRadius = this.baseRadius / 2; // Rayon de l'orbite
         this.sinValue = Math.random();
-        this.speed = Math.random() * 0.1 + 0.001; // Vitesse de rotation aléatoire
-        this.direction = Math.random() < 0.5 ? 1 : -1; // Direction aléatoire
+        // this.speed = 0.01; // Vitesse de rotation
 
-        this.isStatic = isStatic; // Détermine si la particule est statique
+        this.speed = Math.random() * 0.01 + 0.001; // Vitesse de rotation aléatoire
+        this.direction = Math.random() < 0.5 ? 1 : -1; // Direction aléatoire
     }
 
     interpolateColor(color1, color2, factor) {
@@ -30,16 +32,19 @@ export class GlowParticle {
 
     animate(ctx, stageWidth, stageHeight) {
         if (!this.isStatic) {
+            // this.angle += this.speed; // Incrémente l'angle pour faire tourner la particule
             this.angle += this.speed * this.direction; // Incrémente l'angle pour faire tourner la particule
-
+    
             // Calcule la nouvelle position en utilisant des coordonnées polaires
             this.x = stageWidth / 2 + Math.cos(this.angle) * this.orbitRadius;
             this.y = stageHeight / 2 + Math.sin(this.angle) * this.orbitRadius;
+
         }
 
         // Osciller la valeur de this.radius entre minRadius et maxRadius
         this.sinValue += 0.01;
         this.radius = this.baseRadius + (Math.sin(this.sinValue) + 1) / 2 * (this.baseRadius / 3);
+        
 
         // Interpoler entre les couleurs
         this.colorTransitionProgress += this.colorTransitionSpeed;
@@ -59,6 +64,7 @@ export class GlowParticle {
             this.x,
             this.y,
             this.radius * 0.001,
+            // this.radius * .99,
             this.x,
             this.y,
             this.radius

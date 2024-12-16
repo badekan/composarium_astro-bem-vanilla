@@ -1,0 +1,89 @@
+---
+import CsrNebula, { LavaLampColor } from "./nebula.astro";
+import headerProps from "../../organisms/header/data/header";
+import Header from "../../organisms/header/header.astro";
+---
+<div class="layout-nebula">
+  <Header {...headerProps} />
+  <div class="section-nebula">
+    <div class="nebula-box">
+      <h1 class="nebula-box__title">
+        Nebula
+      </h1>
+      <CsrNebula class="nebula-box__el" color={LavaLampColor.VariantB}/>
+    </div>
+  </div>
+</div>
+
+<style lang="scss">
+  @use "../../../scss/config" as *;
+  
+  $section-nebula--line-color: rgba($black, .2);
+
+  .layout-nebula{
+    width: 100%;
+  }
+  .section-nebula{
+    width: 80%;
+    max-width: rem(1160);
+    margin: 0 auto;
+    position: relative;
+    z-index: 10;
+    
+    border-left: 1px solid $section-nebula--line-color;
+    border-right: 1px solid $section-nebula--line-color;
+    &:after{
+      z-index: 10;
+      border-left: 1px solid $section-nebula--line-color;
+      border-right: 1px solid $section-nebula--line-color;
+      @include pseudo();
+      @include center();
+      width: 55%;
+      height: 100%;
+    }
+    &:before{
+      z-index: 10;
+      @include pseudo();
+      @include center();
+      width: 1px;
+      height: 100%;
+      background: radial-gradient(circle at center, transparent 30%, $section-nebula--line-color 100%);
+    }
+  }
+
+  .nebula-box{
+    position: relative;
+    margin: 0 auto;
+    @include square(800);
+    background: $white;
+
+    &__title{
+      position: absolute;
+      z-index: 9;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+
+      font-size: rem(70);
+      font-weight: 900;
+      line-height: 1;
+      text-align: center;
+      color: $white;
+      font-optical-sizing: auto;
+      font-weight: 700;
+    }
+
+    &__el{
+      position: absolute;
+      z-index: 8;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+    }
+  }
+  
+</style>
